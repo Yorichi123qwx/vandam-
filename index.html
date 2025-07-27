@@ -4,66 +4,471 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Vandam Egy">
-    <meta name="description" content="أدوات إعدادات فري فاير - اختبار وتعديل الحساسية حسب مواصفات جهازك">
-    <title>Vandam Egy - إعدادات فري فاير</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .page { display: none; }
-        .page.active { display: block; }
-        .status-box { text-align: center; margin: 20px 0; }
-        .spinner { border: 4px solid #ccc; border-top: 4px solid #333; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        .sensitivity-item { margin: 5px 0; display: flex; justify-content: space-between; }
-    </style>
+    <meta name="description" content="أدوات إعدادات فري فاير المتقدمة - اكتشاف دقيق للجهاز وحساسية مثالية حسب عدد الأصابع">
+    <title>Vandam Egy - إعدادات فري فاير المتقدمة</title>
+    <link rel="stylesheet" href="enhanced_style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-crosshairs"></i>
+                    <span>Vandam Egy</span>
+                </div>
+                <div class="header-subtitle">إعدادات فري فاير المتقدمة</div>
+            </div>
+        </header>
+
+        <!-- Game Selection Page -->
         <div id="game-selection" class="page active">
-            <h1>اختر اللعبة</h1>
-            <button id="free-fire-btn">فري فاير</button>
+            <div class="page-container">
+                <div class="welcome-section">
+                    <h1 class="main-title">
+                        <i class="fas fa-gamepad"></i>
+                        اختر اللعبة
+                    </h1>
+                    <p class="subtitle">احصل على إعدادات الحساسية المثالية لجهازك</p>
+                </div>
+                
+                <div class="game-cards">
+                    <div class="game-card" id="free-fire-btn">
+                        <div class="card-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>فري فاير</h3>
+                        <p>إعدادات محسنة ودقيقة</p>
+                        <div class="card-badge">الأكثر شيوعاً</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Sensitivity Type Selection Page -->
         <div id="sensitivity-selection" class="page">
-            <h1>اختر نوع الحساسية</h1>
-            <button id="game-sensitivity-btn">حساسية اللعبة</button>
-            <button id="shoot-sensitivity-btn">حساسية زر الضرب</button>
+            <div class="page-container">
+                <div class="page-header">
+                    <button class="back-btn" onclick="navigateTo('game')">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <h1>
+                        <i class="fas fa-sliders-h"></i>
+                        اختر نوع الحساسية
+                    </h1>
+                </div>
+                
+                <div class="sensitivity-options">
+                    <div class="option-card" id="game-sensitivity-btn">
+                        <div class="option-icon">
+                            <i class="fas fa-mouse"></i>
+                        </div>
+                        <h3>حساسية اللعبة</h3>
+                        <p>الحساسية العامة لحركة الكاميرا</p>
+                        <div class="option-features">
+                            <span><i class="fas fa-check"></i> مناسبة للمبتدئين</span>
+                            <span><i class="fas fa-check"></i> سهلة التحكم</span>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" id="shoot-sensitivity-btn">
+                        <div class="option-icon">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <h3>حساسية التصويب</h3>
+                        <p>حساسية مخصصة لكل نوع منظار</p>
+                        <div class="option-features">
+                            <span><i class="fas fa-check"></i> دقة عالية</span>
+                            <span><i class="fas fa-check"></i> للمحترفين</span>
+                        </div>
+                        <div class="option-badge">موصى به</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Finger Count Selection Page -->
+        <div id="finger-selection" class="page">
+            <div class="page-container">
+                <div class="page-header">
+                    <button class="back-btn" onclick="navigateTo('sensitivity')">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <h1>
+                        <i class="fas fa-hand-paper"></i>
+                        اختر عدد الأصابع
+                    </h1>
+                    <p class="page-description">عدد الأصابع يؤثر على أسلوب اللعب والحساسية المثالية</p>
+                </div>
+                
+                <div class="finger-options">
+                    <div class="finger-card" data-fingers="2">
+                        <div class="finger-icon">
+                            <i class="fas fa-hand-peace"></i>
+                            <span class="finger-count">2</span>
+                        </div>
+                        <h3>إصبعان</h3>
+                        <p class="finger-description">الأسلوب التقليدي</p>
+                        <div class="finger-level">
+                            <span class="level-badge beginner">مبتدئ</span>
+                        </div>
+                        <ul class="finger-features">
+                            <li><i class="fas fa-check"></i> سهل التعلم</li>
+                            <li><i class="fas fa-check"></i> مريح لفترات طويلة</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="finger-card" data-fingers="3">
+                        <div class="finger-icon">
+                            <i class="fas fa-hand-spock"></i>
+                            <span class="finger-count">3</span>
+                        </div>
+                        <h3>ثلاثة أصابع</h3>
+                        <p class="finger-description">توازن بين السهولة والأداء</p>
+                        <div class="finger-level">
+                            <span class="level-badge intermediate">متوسط</span>
+                        </div>
+                        <ul class="finger-features">
+                            <li><i class="fas fa-check"></i> مرونة أكبر</li>
+                            <li><i class="fas fa-check"></i> تحكم أفضل</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="finger-card recommended" data-fingers="4">
+                        <div class="finger-icon">
+                            <i class="fas fa-hand-paper"></i>
+                            <span class="finger-count">4</span>
+                        </div>
+                        <h3>أربعة أصابع</h3>
+                        <p class="finger-description">الأكثر شيوعاً بين المحترفين</p>
+                        <div class="finger-level">
+                            <span class="level-badge advanced">متقدم</span>
+                        </div>
+                        <ul class="finger-features">
+                            <li><i class="fas fa-check"></i> تحكم ممتاز</li>
+                            <li><i class="fas fa-check"></i> مناورات سريعة</li>
+                        </ul>
+                        <div class="recommended-badge">
+                            <i class="fas fa-star"></i> موصى به
+                        </div>
+                    </div>
+                    
+                    <div class="finger-card" data-fingers="5">
+                        <div class="finger-icon">
+                            <i class="fas fa-hand-paper"></i>
+                            <span class="finger-count">5</span>
+                        </div>
+                        <h3>خمسة أصابع</h3>
+                        <p class="finger-description">أسلوب متقدم للمحترفين</p>
+                        <div class="finger-level">
+                            <span class="level-badge expert">خبير</span>
+                        </div>
+                        <ul class="finger-features">
+                            <li><i class="fas fa-check"></i> تحكم كامل</li>
+                            <li><i class="fas fa-check"></i> سرعة فائقة</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="finger-card" data-fingers="6">
+                        <div class="finger-icon">
+                            <i class="fas fa-hand-paper"></i>
+                            <span class="finger-count">6</span>
+                        </div>
+                        <h3>ستة أصابع</h3>
+                        <p class="finger-description">الأكثر تقدماً - للخبراء فقط</p>
+                        <div class="finger-level">
+                            <span class="level-badge master">محترف</span>
+                        </div>
+                        <ul class="finger-features">
+                            <li><i class="fas fa-check"></i> أقصى تحكم</li>
+                            <li><i class="fas fa-check"></i> إمكانيات لا محدودة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Selection Page -->
         <div id="device-selection" class="page">
-            <h1>اختر نوع الجهاز</h1>
-            <button id="auto-detect-btn">اكتشاف تلقائي</button>
-            <button id="pc-btn">كمبيوتر</button>
-            <button id="mobile-btn">هاتف</button>
-            <div id="detection-message"></div>
+            <div class="page-container">
+                <div class="page-header">
+                    <button class="back-btn" onclick="navigateTo('fingers')">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <h1>
+                        <i class="fas fa-mobile-alt"></i>
+                        اكتشاف الجهاز
+                    </h1>
+                    <p class="page-description">سنقوم باكتشاف جهازك تلقائياً لتحديد الحساسية المثالية</p>
+                </div>
+                
+                <div class="device-options">
+                    <div class="device-card primary" id="auto-detect-btn">
+                        <div class="device-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>اكتشاف تلقائي</h3>
+                        <p>اكتشاف دقيق لمواصفات جهازك</p>
+                        <div class="device-features">
+                            <span><i class="fas fa-check"></i> دقة عالية</span>
+                            <span><i class="fas fa-check"></i> تحليل شامل</span>
+                            <span><i class="fas fa-check"></i> موصى به</span>
+                        </div>
+                    </div>
+                    
+                    <div class="manual-options">
+                        <h4>أو اختر يدوياً:</h4>
+                        <div class="manual-cards">
+                            <div class="device-card" id="mobile-btn">
+                                <div class="device-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <h3>هاتف محمول</h3>
+                            </div>
+                            
+                            <div class="device-card" id="tablet-btn">
+                                <div class="device-icon">
+                                    <i class="fas fa-tablet-alt"></i>
+                                </div>
+                                <h3>تابلت</h3>
+                            </div>
+                            
+                            <div class="device-card" id="pc-btn">
+                                <div class="device-icon">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <h3>كمبيوتر</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="detection-message" class="detection-message"></div>
+            </div>
         </div>
 
+        <!-- Results Page -->
         <div id="result" class="page">
-            <h1>النتيجة</h1>
-            <div id="detection-status" class="status-box">
-                <div class="spinner"></div>
-                <p>جاري اكتشاف مواصفات جهازك...</p>
-            </div>
-            <div id="device-info">
-                <p><strong>اسم الجهاز:</strong> <span id="device-name"></span></p>
-                <p><strong>الرام:</strong> <span id="device-ram"></span></p>
-                <p><strong>المعالج:</strong> <span id="device-cpu"></span></p>
-                <p><strong>كرت الشاشة:</strong> <span id="device-gpu"></span></p>
-                <p><strong>نظام التشغيل:</strong> <span id="device-os"></span></p>
-                <p><strong>دقة الشاشة:</strong> <span id="device-resolution"></span></p>
-                <p><strong>عدد نقاط اللمس:</strong> <span id="device-touch"></span></p>
-            </div>
+            <div class="page-container">
+                <div class="page-header">
+                    <button class="back-btn" onclick="navigateTo('device')">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <h1>
+                        <i class="fas fa-chart-line"></i>
+                        النتائج
+                    </h1>
+                </div>
 
-            <div id="sensitivity-info" class="sensitivity-box">
-                <h3><i class="icon-settings"></i> إعدادات الحساسية المثالية</h3>
-                <div id="sensitivity-values" class="sensitivity-grid"></div>
-                <button id="test-sensitivity" class="test-btn">تجربة الحساسية الآن</button>
-                <div class="compatibility-notice">
-                    تم التحقق من توافق هذه الإعدادات مع جهازك
+                <!-- Detection Status -->
+                <div id="detection-status" class="detection-status">
+                    <div class="status-animation">
+                        <div class="spinner"></div>
+                        <div class="pulse-rings">
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                        </div>
+                    </div>
+                    <h3>جاري تحليل جهازك...</h3>
+                    <p>يرجى الانتظار بينما نقوم بفحص مواصفات جهازك بدقة</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Device Information -->
+                <div id="device-info" class="device-info">
+                    <div class="info-header">
+                        <h2>
+                            <i class="fas fa-info-circle"></i>
+                            معلومات الجهاز
+                        </h2>
+                        <div class="accuracy-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>دقة: <span id="detection-accuracy">0%</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="device-specs">
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>اسم الجهاز</label>
+                                <span id="device-name">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>نظام التشغيل</label>
+                                <span id="device-os">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>الذاكرة العشوائية</label>
+                                <span id="device-ram">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>المعالج</label>
+                                <span id="device-cpu">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-tv"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>كرت الشاشة</label>
+                                <span id="device-gpu">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-expand"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>دقة الشاشة</label>
+                                <span id="device-resolution">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-hand-paper"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>نقاط اللمس</label>
+                                <span id="device-touch">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-card">
+                            <div class="spec-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="spec-content">
+                                <label>نقاط الأداء</label>
+                                <span id="device-performance">جاري الاكتشاف...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finger Selection Summary -->
+                <div id="finger-summary" class="finger-summary">
+                    <h3>
+                        <i class="fas fa-hand-paper"></i>
+                        أسلوب اللعب المختار
+                    </h3>
+                    <div class="selected-finger-info">
+                        <div class="finger-display">
+                            <span id="selected-finger-count">4</span>
+                            <span>أصابع</span>
+                        </div>
+                        <div class="finger-details">
+                            <h4 id="selected-finger-name">أربعة أصابع</h4>
+                            <p id="selected-finger-description">الأسلوب الأكثر شيوعاً بين المحترفين</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sensitivity Results -->
+                <div id="sensitivity-info" class="sensitivity-info">
+                    <div class="sensitivity-header">
+                        <h2>
+                            <i class="fas fa-sliders-h"></i>
+                            إعدادات الحساسية المثالية
+                        </h2>
+                        <div class="confidence-badge">
+                            <i class="fas fa-check-circle"></i>
+                            <span>ثقة: <span id="sensitivity-confidence">0%</span></span>
+                        </div>
+                    </div>
+                    
+                    <div id="sensitivity-values" class="sensitivity-grid"></div>
+                    
+                    <div class="sensitivity-actions">
+                        <button id="test-sensitivity" class="test-btn">
+                            <i class="fas fa-play"></i>
+                            تجربة الحساسية الآن
+                        </button>
+                        <button id="copy-settings" class="copy-btn">
+                            <i class="fas fa-copy"></i>
+                            نسخ الإعدادات
+                        </button>
+                        <button id="share-settings" class="share-btn">
+                            <i class="fas fa-share"></i>
+                            مشاركة
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div id="recommendations" class="recommendations">
+                    <h3>
+                        <i class="fas fa-lightbulb"></i>
+                        نصائح وتوصيات
+                    </h3>
+                    <div id="recommendations-list" class="recommendations-list"></div>
+                </div>
+
+                <!-- Compatibility Info -->
+                <div id="compatibility-info" class="compatibility-info">
+                    <h3>
+                        <i class="fas fa-shield-alt"></i>
+                        معلومات التوافق
+                    </h3>
+                    <div class="compatibility-grid">
+                        <div class="compatibility-item">
+                            <i class="fas fa-gamepad"></i>
+                            <span>دعم فري فاير</span>
+                            <span id="freefire-support" class="status-good">مدعوم</span>
+                        </div>
+                        <div class="compatibility-item">
+                            <i class="fas fa-cogs"></i>
+                            <span>الإعدادات الموصى بها</span>
+                            <span id="recommended-settings">متوسط</span>
+                        </div>
+                        <div class="compatibility-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>معدل الإطارات المتوقع</span>
+                            <span id="expected-fps">30-60</span>
+                        </div>
+                        <div class="compatibility-item">
+                            <i class="fas fa-battery-half"></i>
+                            <span>عمر البطارية</span>
+                            <span id="battery-life">متوسط</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="enhanced_device_detection.js"></script>
+    <script src="sensitivity_database.js"></script>
+    <script src="enhanced_script.js"></script>
 </body>
 </html>
+
