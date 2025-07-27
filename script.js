@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // DOM Elements
+document.addEventListener("DOMContentLoaded", function () {
     const pages = {
         gameSelection: document.getElementById("game-selection"),
         sensitivitySelection: document.getElementById("sensitivity-selection"),
@@ -9,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
         deviceInfo: document.getElementById("device-info")
     };
 
-    // Buttons
     const buttons = {
         freeFire: document.getElementById("free-fire-btn"),
         gameSense: document.getElementById("game-sensitivity-btn"),
@@ -20,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function() {
         testSense: document.getElementById("test-sensitivity")
     };
 
-    // Navigation
     buttons.freeFire.addEventListener("click", () => navigateTo("sensitivity"));
     buttons.gameSense.addEventListener("click", () => selectSensitivity("game"));
     buttons.shootSense.addEventListener("click", () => selectSensitivity("shoot"));
@@ -29,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function() {
     buttons.mobile.addEventListener("click", () => selectDevice("mobile"));
     buttons.testSense.addEventListener("click", testSensitivity);
 
-    // Current selection
     let currentSelection = {
         sensitivityType: null,
         deviceType: null,
@@ -37,11 +33,9 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function navigateTo(page) {
-        // Hide all pages
         Object.values(pages).forEach(p => p.classList.remove("active"));
-        
-        // Show requested page
-        switch(page) {
+
+        switch (page) {
             case "sensitivity":
                 pages.sensitivitySelection.classList.add("active");
                 break;
@@ -65,45 +59,50 @@ document.addEventListener("DOMContentLoaded", function() {
         navigateTo("result");
     }
 
-    function autoDetectDevice() {
+    async function autoDetectDevice() {
         const message = document.getElementById("detection-message");
-        message.textContent = "جاري اكتشاف نوع الجهاز...";
-        
-        // Simulate detection delay
+        message.textContent = "جارٍ اكتشاف نوع الجهاز...";
+
         setTimeout(() => {
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            currentSelection.deviceType = isMobile ? "mobile" : "pc";
-            message.textContent = `تم اكتشاف جهاز ${isMobile ? "هاتف محمول" : "كمبيوتر"}`;
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 1;
+            const deviceType = (isMobile && hasTouch) ? "mobile" : "pc";
+            currentSelection.deviceType = deviceType;
+            message.textContent = `تم اكتشاف جهاز ${deviceType === "mobile" ? "هاتف محمول" : "كمبيوتر"}`;
         }, 1500);
     }
 
     function detectDevice() {
-        // Show loading
         pages.detectionStatus.style.display = "block";
         pages.deviceInfo.style.opacity = "0.5";
-        
+
         setTimeout(() => {
-            // Get device specs
+            const gl = document.createElement('canvas').getContext('webgl');
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+
+            const gpu = debugInfo
+                ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+                : "غير معروف";
+
             const specs = {
                 name: navigator.platform,
-                ram: navigator.deviceMemory ? `${navigator.deviceMemory}GB` : "غير معروف",
+                ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "غير معروف",
                 cpu: navigator.hardwareConcurrency ? `نوى المعالج: ${navigator.hardwareConcurrency}` : "غير معروف",
-                os: `${navigator.platform} (${navigator.userAgent})`
+                gpu: gpu,
+                os: `${navigator.platform} - ${navigator.userAgent}`
             };
-            
+
             currentSelection.specs = specs;
-            
-            // Update UI
+
             document.getElementById("device-name").textContent = specs.name;
             document.getElementById("device-ram").textContent = specs.ram;
             document.getElementById("device-cpu").textContent = specs.cpu;
+            document.getElementById("device-gpu").textContent = specs.gpu;
             document.getElementById("device-os").textContent = specs.os;
-            
-            // Hide loading
+
             pages.detectionStatus.style.display = "none";
             pages.deviceInfo.style.opacity = "1";
-            
-            // Generate sensitivity values
+
             generateSensitivityValues();
         }, 2500);
     }
@@ -111,32 +110,39 @@ document.addEventListener("DOMContentLoaded", function() {
     function generateSensitivityValues() {
         const sensitivityValues = document.getElementById("sensitivity-values");
         sensitivityValues.innerHTML = "";
-        
-        // Generate values based on device type
-        const values = [];
-        
-        if (currentSelection.deviceType === "mobile") {
-            values.push(["العام", "45"]);
-            values.push(["المسافة القصيرة", "55"]);
-            values.push(["المتوسطة", "65"]);
-            values.push(["الميدان", "75"]);
+
+        const { deviceType, specs } = currentSelection;
+        const ram = parseFloat(specs.ram) || 2;
+        const coresMatch = specs.cpu.match(/\d+/);
+        const cores = coresMatch ? parseInt(coresMatch[0]) : 2;
+        const gpu = specs.gpu.toLowerCase();
+
+        let scale = 1;
+
+        if (ram >= 6 && cores >= 4 && !gpu.includes("intel")) {
+            scale = 1.2;
+        } else if (ram >= 4 && cores >= 2) {
+            scale = 1;
         } else {
-            values.push(["العام", "35"]);
-            values.push(["المسافة القصيرة", "45"]);
-            values.push(["المتوسطة", "55"]);
-            values.push(["الميدان", "65"]);
+            scale = 0.8;
         }
-        
-        values.forEach(val => {
+
+        const baseValues = deviceType === "mobile"
+            ? [45, 55, 65, 75]
+            : [35, 45, 55, 65];
+
+        const labels = ["العام", "المسافة القصيرة", "المتوسطة", "الميدان"];
+
+        baseValues.forEach((val, i) => {
+            const value = Math.round(val * scale);
             const div = document.createElement("div");
             div.className = "sensitivity-item";
-            div.innerHTML = `<span class="sense-label">${val[0]}</span><span class="sense-value">${val[1]}</span>`;
+            div.innerHTML = `<span class="sense-label">${labels[i]}</span><span class="sense-value">${value}</span>`;
             sensitivityValues.appendChild(div);
         });
     }
 
     function testSensitivity() {
         alert("جارٍ تجربة الحساسية الآن...\nيرجى الانتقال إلى اللعبة لتجربة الإعدادات الجديدة");
-        // In a real implementation, this would trigger actual sensitivity adjustments
     }
 });
