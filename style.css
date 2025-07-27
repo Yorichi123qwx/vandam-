@@ -1,13 +1,18 @@
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #282c34;
-    color: white;
-    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    color: #fff;
+    margin: 0;
     padding: 20px;
+    line-height: 1.6;
 }
 
 .page {
     display: none;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .page.active {
@@ -15,15 +20,103 @@ body {
 }
 
 button {
-    background-color: #61dafb;
+    background: #4cc9f0;
+    color: #1a1a2e;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
     margin: 10px;
-    cursor: pointer;
     border-radius: 5px;
-    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-button:hover {
-    background-color: #21a1f1;
+/* Status Styles */
+.status-box {
+    background: rgba(76, 201, 240, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.spinner {
+    border: 4px solid rgba(76, 201, 240, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #4cc9f0;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Specs Styles */
+.specs-box {
+    background: rgba(28, 28, 40, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.spec-item {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2b2b40;
+}
+
+.spec-label {
+    font-weight: bold;
+    width: 120px;
+    color: #4cc9f0;
+}
+
+.spec-value {
+    flex: 1;
+}
+
+/* Sensitivity Styles */
+.sensitivity-box {
+    background: rgba(28, 28, 40, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.sensitivity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.compatibility-notice {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #8dd4ff;
+    text-align: center;
+}
+
+.test-btn {
+    background: #f72585;
+    color: white;
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* Icons */
+.icon-info::before {
+    content: "ⓘ";
+    margin-right: 8px;
+}
+
+.icon-settings::before {
+    content: "⚙️";
+    margin-right: 8px;
 }
