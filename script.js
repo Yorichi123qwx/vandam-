@@ -72,24 +72,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1500);
     }
 
-    function detectDevice() {
+    async function detectDevice() {
         pages.detectionStatus.style.display = "block";
         pages.deviceInfo.style.opacity = "0.5";
 
-        setTimeout(() => {
-            const gl = document.createElement('canvas').getContext('webgl');
-            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-
-            const gpu = debugInfo
-                ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
-                : "غير معروف";
+        setTimeout(async () => {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            let gpu = "غير معروف";
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                }
+            }
 
             const specs = {
-                name: navigator.platform,
+                name: (navigator.userAgentData && navigator.userAgentData.brands)
+                    ? navigator.userAgentData.brands.map(b => b.brand).join("، ")
+                    : (navigator.userAgent.length > 50 ? navigator.userAgent.slice(0, 50) + "..." : navigator.userAgent),
                 ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "غير معروف",
                 cpu: navigator.hardwareConcurrency ? `نوى المعالج: ${navigator.hardwareConcurrency}` : "غير معروف",
                 gpu: gpu,
-                os: `${navigator.platform} - ${navigator.userAgent}`
+                os: detectOS()
             };
 
             currentSelection.specs = specs;
@@ -105,6 +110,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             generateSensitivityValues();
         }, 2500);
+    }
+
+    function detectOS() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if (/windows phone/i.test(userAgent)) return "Windows Phone";
+        if (/android/i.test(userAgent)) return "Android";
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
+        if (/Win/.test(userAgent)) return "Windows";
+        if (/Mac/.test(userAgent)) return "macOS";
+        if (/Linux/.test(userAgent)) return "Linux";
+        return "غير معروف";
     }
 
     function generateSensitivityValues() {
