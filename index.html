@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Vandam Egy">
+    <meta name="description" content="أدوات إعدادات فري فاير - اختبار وتعديل الحساسية حسب مواصفات جهازك">
     <title>Vandam Egy - إعدادات فري فاير</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -24,15 +26,46 @@
         <!-- صفحة اختيار الجهاز -->
         <div id="device-selection" class="page">
             <h1>اختر نوع الجهاز</h1>
+            <button id="auto-detect-btn">اكتشاف تلقائي</button>
             <button id="pc-btn">كمبيوتر</button>
             <button id="mobile-btn">هاتف</button>
+            <div id="detection-message"></div>
         </div>
 
         <!-- صفحة النتائج -->
         <div id="result" class="page">
             <h1>النتيجة</h1>
-            <div id="device-info"></div>
-            <div id="sensitivity-info"></div>
+            <div id="detection-status" class="status-box">
+                <div class="spinner"></div>
+                <p>جاري اكتشاف مواصفات جهازك...</p>
+            </div>
+            <div id="device-info" class="specs-box">
+                <h3><i class="icon-info"></i> مواصفات الجهاز</h3>
+                <div class="spec-item">
+                    <span class="spec-label">النوع:</span>
+                    <span id="device-name" class="spec-value">--</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">الذاكرة:</span>
+                    <span id="device-ram" class="spec-value">--</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">المعالج:</span>
+                    <span id="device-cpu" class="spec-value">--</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">نظام التشغيل:</span>
+                    <span id="device-os" class="spec-value">--</span>
+                </div>
+            </div>
+            <div id="sensitivity-info" class="sensitivity-box">
+                <h3><i class="icon-settings"></i> إعدادات الحساسية المثالية</h3>
+                <div id="sensitivity-values" class="sensitivity-grid"></div>
+                <button id="test-sensitivity" class="test-btn">تجربة الحساسية الآن</button>
+                <div class="compatibility-notice">
+                    تم التحقق من توافق هذه الإعدادات مع جهازك
+                </div>
+            </div>
         </div>
     </div>
 
