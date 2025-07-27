@@ -7,23 +7,28 @@
     <meta name="description" content="أدوات إعدادات فري فاير - اختبار وتعديل الحساسية حسب مواصفات جهازك">
     <title>Vandam Egy - إعدادات فري فاير</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+        .status-box { text-align: center; margin: 20px 0; }
+        .spinner { border: 4px solid #ccc; border-top: 4px solid #333; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .sensitivity-item { margin: 5px 0; display: flex; justify-content: space-between; }
+    </style>
 </head>
 <body>
     <div id="app">
-        <!-- صفحة اختيار اللعبة -->
         <div id="game-selection" class="page active">
             <h1>اختر اللعبة</h1>
             <button id="free-fire-btn">فري فاير</button>
         </div>
 
-        <!-- صفحة اختيار الحساسية -->
         <div id="sensitivity-selection" class="page">
             <h1>اختر نوع الحساسية</h1>
             <button id="game-sensitivity-btn">حساسية اللعبة</button>
             <button id="shoot-sensitivity-btn">حساسية زر الضرب</button>
         </div>
 
-        <!-- صفحة اختيار الجهاز -->
         <div id="device-selection" class="page">
             <h1>اختر نوع الجهاز</h1>
             <button id="auto-detect-btn">اكتشاف تلقائي</button>
@@ -32,7 +37,6 @@
             <div id="detection-message"></div>
         </div>
 
-        <!-- صفحة النتائج -->
         <div id="result" class="page">
             <h1>النتيجة</h1>
             <div id="detection-status" class="status-box">
@@ -40,14 +44,15 @@
                 <p>جاري اكتشاف مواصفات جهازك...</p>
             </div>
             <div id="device-info">
-    <p><strong>اسم الجهاز:</strong> <span id="device-name"></span></p>
-    <p><strong>الرام:</strong> <span id="device-ram"></span></p>
-    <p><strong>المعالج:</strong> <span id="device-cpu"></span></p>
-    <p><strong>كرت الشاشة:</strong> <span id="device-gpu"></span></p>
-    <p><strong>نظام التشغيل:</strong> <span id="device-os"></span></p>
-</div>
-
+                <p><strong>اسم الجهاز:</strong> <span id="device-name"></span></p>
+                <p><strong>الرام:</strong> <span id="device-ram"></span></p>
+                <p><strong>المعالج:</strong> <span id="device-cpu"></span></p>
+                <p><strong>كرت الشاشة:</strong> <span id="device-gpu"></span></p>
+                <p><strong>نظام التشغيل:</strong> <span id="device-os"></span></p>
+                <p><strong>دقة الشاشة:</strong> <span id="device-resolution"></span></p>
+                <p><strong>عدد نقاط اللمس:</strong> <span id="device-touch"></span></p>
             </div>
+
             <div id="sensitivity-info" class="sensitivity-box">
                 <h3><i class="icon-settings"></i> إعدادات الحساسية المثالية</h3>
                 <div id="sensitivity-values" class="sensitivity-grid"></div>
