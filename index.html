@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vandam Egy - إعدادات فري فاير</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- صفحة اختيار اللعبة -->
+        <div id="game-selection" class="page active">
+            <h1>اختر اللعبة</h1>
+            <button id="free-fire-btn">فري فاير</button>
+        </div>
+
+        <!-- صفحة اختيار الحساسية -->
+        <div id="sensitivity-selection" class="page">
+            <h1>اختر نوع الحساسية</h1>
+            <button id="game-sensitivity-btn">حساسية اللعبة</button>
+            <button id="shoot-sensitivity-btn">حساسية زر الضرب</button>
+        </div>
+
+        <!-- صفحة اختيار الجهاز -->
+        <div id="device-selection" class="page">
+            <h1>اختر نوع الجهاز</h1>
+            <button id="pc-btn">كمبيوتر</button>
+            <button id="mobile-btn">هاتف</button>
+        </div>
+
+        <!-- صفحة النتائج -->
+        <div id="result" class="page">
+            <h1>النتيجة</h1>
+            <div id="device-info"></div>
+            <div id="sensitivity-info"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
