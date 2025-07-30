@@ -87,16 +87,16 @@ class EnhancedDeviceDetector {
         } else {
             // Estimate RAM based on other factors
             hardware.ram = this.estimateRAM();
-            hardware.ramFormatted = `~${hardware.ram} GB (تقديري)`;
+            hardware.ramFormatted = `~${hardware.ram} GB (تقديري)`; // This will be translated
         }
 
         // CPU cores detection
         if ('hardwareConcurrency' in navigator) {
             hardware.cpuCores = navigator.hardwareConcurrency;
-            hardware.cpuInfo = `${navigator.hardwareConcurrency} نواة`;
+            hardware.cpuInfo = `${navigator.hardwareConcurrency} نواة`; // This will be translated
         } else {
             hardware.cpuCores = 2; // Default fallback
-            hardware.cpuInfo = "غير معروف";
+            hardware.cpuInfo = "غير معروف"; // This will be translated
         }
 
         // GPU detection using WebGL
@@ -155,14 +155,23 @@ class EnhancedDeviceDetector {
         // WebGL performance test
         performance.webglPerformance = await this.benchmarkWebGL();
 
-        // Memory usage estimation
-        if ('memory' in performance) {
+        // Memory usage estimation (performance.memory is not standard, often undefined)
+        // if ('memory' in performance) { // This check is incorrect, should be 'performance.memory'
+        //     performance.memoryUsage = {
+        //         used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
+        //         total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024),
+        //         limit: Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024)
+        //     };
+        // }
+        // Corrected memory usage estimation if performance.memory is available
+        if (window.performance && window.performance.memory) {
             performance.memoryUsage = {
-                used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
-                total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024),
-                limit: Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024)
+                used: Math.round(window.performance.memory.usedJSHeapSize / 1024 / 1024),
+                total: Math.round(window.performance.memory.totalJSHeapSize / 1024 / 1024),
+                limit: Math.round(window.performance.memory.jsHeapSizeLimit / 1024 / 1024)
             };
         }
+
 
         // Overall performance score
         performance.overallScore = this.calculatePerformanceScore(performance);
@@ -284,11 +293,12 @@ class EnhancedDeviceDetector {
 
     // Browser detection
     detectBrowser(userAgent) {
-        if (/Chrome/i.test(userAgent) && !/Edge/i.test(userAgent)) return 'Chrome';
+        if (/Chrome/i.test(userAgent) && !/Edge|Edg/i.test(userAgent)) return 'Chrome'; // Exclude Edge
         if (/Firefox/i.test(userAgent)) return 'Firefox';
         if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) return 'Safari';
-        if (/Edge/i.test(userAgent)) return 'Edge';
-        if (/Opera/i.test(userAgent)) return 'Opera';
+        if (/Edge|Edg/i.test(userAgent)) return 'Edge'; // Handle new Edge (Chromium-based)
+        if (/Opera|OPR/i.test(userAgent)) return 'Opera'; // Handle Opera (Chromium-based)
+        if (/MSIE|Trident/i.test(userAgent)) return 'Internet Explorer'; // Old IE
         return 'Unknown';
     }
 
@@ -296,26 +306,86 @@ class EnhancedDeviceDetector {
     extractDeviceName(userAgent) {
         // Android device name extraction
         if (/Android/i.test(userAgent)) {
-            const match = userAgent.match(/;\s*([^)]+)\s*\)/);
-            if (match) {
+            // Try to match specific models first (add more as needed)
+            const androidModels = {
+                'SM-A135F': 'Samsung Galaxy A13',
+                'CPH2239': 'Oppo Reno 6',
+                'CPH2371': 'Oppo Reno 8',
+                '2201116PG': 'Xiaomi 12 Pro',
+                'Pixel 6': 'Google Pixel 6',
+                'SM-G998B': 'Samsung Galaxy S21 Ultra',
+                'ONEPLUS A0001': 'OnePlus One', // Example for older devices
+                'Redmi Note 8 Pro': 'Xiaomi Redmi Note 8 Pro',
+                'M2007J20CG': 'Xiaomi Mi 10T Pro',
+                'V2027': 'Vivo V20',
+                'RMX2185': 'Realme C15',
+                'Infinix X680B': 'Infinix Note 7',
+                'TECNO CD7': 'Tecno Spark 5 Pro',
+                'HUAWEI JSN-L21': 'Huawei P Smart 2019',
+                'Nokia G20': 'Nokia G20',
+                'moto g(8) power': 'Motorola Moto G8 Power',
+                'LG-H870': 'LG G6',
+                'ASUS_Z01QD': 'Asus ROG Phone II',
+                'POCOPHONE F1': 'Pocophone F1'
+            };
+            for (const model in androidModels) {
+                if (userAgent.includes(model)) {
+                    return androidModels[model];
+                }
+            }
+
+            // Fallback to general Android device name
+            // This regex tries to capture the model name often found between semicolons or before build info
+            const match = userAgent.match(/Android[^;]+;\s*([^;)]+)(?:\sBuild\/|\))/);
+            if (match && match[1]) {
                 let deviceName = match[1].trim();
                 // Clean up common patterns
                 deviceName = deviceName.replace(/Build\/.*$/, '').trim();
                 deviceName = deviceName.replace(/wv$/, '').trim();
-                return deviceName;
+                deviceName = deviceName.replace(/;.*$/, '').trim(); // Remove anything after a semicolon
+                deviceName = deviceName.replace(/^[a-zA-Z0-9]{2,4}\s/, '').trim(); // Remove short prefixes like "SM-" or "CPH" if they are at the start
+                if (deviceName && deviceName !== 'Mobile' && deviceName !== 'Generic') {
+                    return deviceName;
+                }
             }
         }
 
-        // iOS device detection
-        if (/iPhone/i.test(userAgent)) return 'iPhone';
-        if (/iPad/i.test(userAgent)) return 'iPad';
-        if (/iPod/i.test(userAgent)) return 'iPod';
+        // iOS device detection (more specific)
+        if (/iPhone/i.test(userAgent)) {
+            const match = userAgent.match(/iPhone OS (\d+_\d+)/);
+            if (match) {
+                const osVersion = match[1].replace(/_/g, '.');
+                // More advanced detection might involve checking screen size/resolution for specific iPhone models
+                // For simplicity, we'll keep it general for now, but this is where you'd add more logic
+                return `iPhone (iOS ${osVersion})`;
+            }
+            return 'iPhone';
+        }
+        if (/iPad/i.test(userAgent)) {
+            return 'iPad';
+        }
+        if (/iPod/i.test(userAgent)) {
+            return 'iPod';
+        }
 
         // Windows device
-        if (/Windows/i.test(userAgent)) return 'Windows PC';
+        if (/Windows NT/i.test(userAgent)) {
+            // Detect if it's a laptop/desktop more accurately
+            if (/Win(dows)?(NT)?\s*((\d+\.\d+)|(\d+))/.test(userAgent)) {
+                return 'Windows PC/Laptop'; // More generic, but can be refined
+            }
+            return 'Windows Device';
+        }
 
-        // Mac device
-        if (/Mac/i.test(userAgent)) return 'Mac';
+        // macOS device
+        if (/Macintosh|Mac OS X/.test(userAgent)) {
+            return 'Mac';
+        }
+
+        // Linux device
+        if (/Linux/.test(userAgent) && !/Android/.test(userAgent)) {
+            return 'Linux PC';
+        }
 
         return 'Unknown Device';
     }
@@ -326,7 +396,7 @@ class EnhancedDeviceDetector {
             const canvas = document.createElement('canvas');
             const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
             
-            if (!gl) return 'WebGL غير مدعوم';
+            if (!gl) return 'WebGL غير مدعوم'; // This will be translated
 
             const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
             if (debugInfo) {
@@ -335,9 +405,9 @@ class EnhancedDeviceDetector {
                 return `${vendor} - ${renderer}`;
             }
 
-            return 'WebGL مدعوم';
+            return 'WebGL مدعوم'; // This will be translated
         } catch (error) {
-            return 'خطأ في اكتشاف GPU';
+            return 'خطأ في اكتشاف GPU'; // This will be translated
         }
     }
 
@@ -345,26 +415,32 @@ class EnhancedDeviceDetector {
     estimateRAM() {
         const userAgent = navigator.userAgent;
         const cores = navigator.hardwareConcurrency || 2;
-        const screenPixels = screen.width * screen.height;
+        const screenPixels = screen.width * screen.height; // Total pixels
 
-        // Basic estimation based on device characteristics
-        if (/iPhone|iPad/.test(userAgent)) {
-            if (screenPixels > 2000000) return 6; // High-end iOS
-            if (screenPixels > 1000000) return 4; // Mid-range iOS
-            return 2; // Low-end iOS
+        // More refined estimation based on device type and characteristics
+        // Note: this.deviceInfo.deviceType might not be set yet when this is called initially
+        // So, rely on userAgent for initial broad categorization
+        const detectedDeviceType = this.detectDeviceType(); // Get device type based on UA
+
+        if (deductedDeviceType === 'mobile' || /iPhone|Android/.test(userAgent)) {
+            if (cores >= 8 && screenPixels > 2500000) return 8; // High-end mobile (e.g., Flagship Android/iOS)
+            if (cores >= 6 && screenPixels > 1800000) return 6; // Mid-high mobile
+            if (cores >= 4 && screenPixels > 1000000) return 4; // Mid-range mobile
+            return 3; // Entry-level mobile
         }
 
-        if (/Android/.test(userAgent)) {
-            if (cores >= 8 && screenPixels > 2000000) return 8; // High-end Android
-            if (cores >= 6 && screenPixels > 1500000) return 6; // Mid-high Android
-            if (cores >= 4 && screenPixels > 1000000) return 4; // Mid-range Android
-            return 3; // Low-end Android
+        if (deductedDeviceType === 'tablet' || /iPad/.test(userAgent)) {
+            if (cores >= 8 && screenPixels > 4000000) return 8; // High-end tablet (e.g., iPad Pro)
+            if (cores >= 6 && screenPixels > 2500000) return 6; // Mid-range tablet
+            return 4; // Entry-level tablet
         }
 
-        // Desktop estimation
+        // Desktop estimation (more RAM expected)
+        if (cores >= 12) return 32;
         if (cores >= 8) return 16;
-        if (cores >= 4) return 8;
-        return 4;
+        if (cores >= 6) return 8;
+        if (cores >= 4) return 4;
+        return 4; // Default fallback for very low-end or unknown
     }
 
     // Pixel density calculation
@@ -379,9 +455,12 @@ class EnhancedDeviceDetector {
         // Rough estimation of DPI
         let estimatedDPI = diagonalPixels / 5; // Assuming ~5 inch diagonal for mobile
         
-        if (this.deviceInfo.deviceType === 'desktop') {
+        // Use the already detected deviceType from basicInfo
+        const currentDeviceType = this.deviceInfo.deviceType || this.detectDeviceType();
+
+        if (currentDeviceType === 'desktop') {
             estimatedDPI = diagonalPixels / 24; // Assuming ~24 inch diagonal for desktop
-        } else if (this.deviceInfo.deviceType === 'tablet') {
+        } else if (currentDeviceType === 'tablet') {
             estimatedDPI = diagonalPixels / 10; // Assuming ~10 inch diagonal for tablet
         }
 
@@ -472,13 +551,13 @@ class EnhancedDeviceDetector {
 
         // Add hardware-based scoring
         if (this.deviceInfo.ram) {
-            const ramScore = Math.min(100, (this.deviceInfo.ram / 8) * 100);
+            const ramScore = Math.min(100, (this.deviceInfo.ram / 8) * 100); // Scale RAM score
             score += ramScore;
             factors++;
         }
 
         if (this.deviceInfo.cpuCores) {
-            const cpuScore = Math.min(100, (this.deviceInfo.cpuCores / 8) * 100);
+            const cpuScore = Math.min(100, (this.deviceInfo.cpuCores / 8) * 100); // Scale CPU score
             score += cpuScore;
             factors++;
         }
@@ -496,8 +575,8 @@ class EnhancedDeviceDetector {
         if ('hardwareConcurrency' in navigator) accuracy += 15;
         if ('connection' in navigator) accuracy += 10;
         if ('getBattery' in navigator) accuracy += 10;
-        if (this.deviceInfo.gpu && !this.deviceInfo.gpu.includes('غير')) accuracy += 20;
-        if (this.deviceInfo.deviceName && !this.deviceInfo.deviceName.includes('Unknown')) accuracy += 15;
+        if (this.deviceInfo.gpu && !this.deviceInfo.gpu.includes('غير')) accuracy += 20; // Check if GPU was successfully detected
+        if (this.deviceInfo.deviceName && !this.deviceInfo.deviceName.includes('Unknown')) accuracy += 15; // Check if device name is specific
         if (this.deviceInfo.os && this.deviceInfo.os.name !== 'Unknown') accuracy += 10;
 
         return Math.min(100, accuracy);
@@ -506,15 +585,15 @@ class EnhancedDeviceDetector {
     // Fallback information when detection fails
     getFallbackInfo() {
         return {
-            deviceName: 'جهاز غير معروف',
-            os: { name: 'Unknown', version: 'Unknown', mobile: false },
+            deviceName: 'جهاز غير معروف', // This will be translated
+            os: { name: 'Unknown', version: 'Unknown', mobile: false }, // These will be translated
             deviceType: 'unknown',
             browser: 'Unknown',
             ram: 4,
-            ramFormatted: '4 GB (افتراضي)',
+            ramFormatted: '4 GB (افتراضي)', // This will be translated
             cpuCores: 4,
-            cpuInfo: '4 نواة (افتراضي)',
-            gpu: 'غير معروف',
+            cpuInfo: '4 نواة (افتراضي)', // This will be translated
+            gpu: 'غير معروف', // This will be translated
             resolution: `${screen.width}×${screen.height}`,
             accuracy: 20,
             detectionTimestamp: Date.now()
@@ -536,13 +615,14 @@ class EnhancedDeviceDetector {
     formatForDisplay() {
         const info = this.deviceInfo;
         
+        // These strings will be translated in script.js using getTranslation
         return {
-            deviceName: info.deviceName || 'غير معروف',
-            os: info.os ? `${info.os.name} ${info.os.version}` : 'غير معروف',
-            ram: info.ramFormatted || 'غير معروف',
-            cpu: info.cpuInfo || 'غير معروف',
-            gpu: info.gpu || 'غير معروف',
-            resolution: info.resolution || 'غير معروف',
+            deviceName: info.deviceName || 'unknown_device',
+            os: info.os ? `${info.os.name} ${info.os.version}` : 'unknown_os',
+            ram: info.ramFormatted || 'unknown_ram',
+            cpu: info.cpuInfo || 'unknown_cpu',
+            gpu: info.gpu || 'unknown_gpu',
+            resolution: info.resolution || 'unknown_resolution',
             touchPoints: info.maxTouchPoints || 0,
             deviceType: info.deviceType || 'unknown',
             performanceScore: info.overallScore || 50,
@@ -553,4 +633,3 @@ class EnhancedDeviceDetector {
 
 // Export for use in main application
 window.EnhancedDeviceDetector = EnhancedDeviceDetector;
-
