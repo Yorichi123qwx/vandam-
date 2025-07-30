@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const deviceDetector = new EnhancedDeviceDetector();
     const sensitivityDB = new FreeFireSensitivityDatabase();
     
+    // Language variables
+    let currentLanguage = localStorage.getItem('lang') || 'ar'; // Default to Arabic
+    let translations = {};
+
     // Page elements
     const pages = {
         gameSelection: document.getElementById("game-selection"),
@@ -26,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         tablet: document.getElementById("tablet-btn"),
         testSense: document.getElementById("test-sensitivity"),
         copySettings: document.getElementById("copy-settings"),
-        shareSettings: document.getElementById("share-settings")
+        shareSettings: document.getElementById("share-settings"),
+        langSwitch: document.getElementById("lang-switch-btn") // New language switch button
     };
 
     // Current selection state
@@ -39,8 +44,88 @@ document.addEventListener("DOMContentLoaded", function () {
         sensitivityResult: null
     };
 
-    // Event listeners
-    setupEventListeners();
+    // Load translations and setup event listeners
+    loadTranslations().then(() => {
+        setupEventListeners();
+        translatePage(); // Translate page after loading translations
+        // Set initial text for dynamic elements that might not be covered by data-i18n
+        updateElement("device-name", getTranslation("detecting_placeholder"));
+        updateElement("device-os", getTranslation("detecting_placeholder"));
+        updateElement("device-ram", getTranslation("detecting_placeholder"));
+        updateElement("device-cpu", getTranslation("detecting_placeholder"));
+        updateElement("device-gpu", getTranslation("detecting_placeholder"));
+        updateElement("device-resolution", getTranslation("detecting_placeholder"));
+        updateElement("device-touch", getTranslation("detecting_placeholder"));
+        updateElement("device-performance", getTranslation("detecting_placeholder"));
+    });
+
+    async function loadTranslations() {
+        try {
+            const response = await fetch(`./lang/${currentLanguage}.json`);
+            translations = await response.json();
+            document.documentElement.lang = currentLanguage;
+            document.documentElement.dir = (currentLanguage === 'ar') ? 'rtl' : 'ltr';
+        } catch (error) {
+            console.error('Error loading translations:', error);
+            // Fallback to a default language or show an error
+            currentLanguage = 'en'; // Fallback
+            const response = await fetch(`./lang/en.json`);
+            translations = await response.json();
+            document.documentElement.lang = currentLanguage;
+            document.documentElement.dir = 'ltr';
+        }
+    }
+
+    function getTranslation(key, replacements = {}) {
+        let text = translations[key] || key; // Fallback to key if not found
+        for (const placeholder in replacements) {
+            text = text.replace(`{${placeholder}}`, replacements[placeholder]);
+        }
+        return text;
+    }
+
+    function translatePage() {
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            if (element.tagName === 'META' && element.name === 'description') {
+                element.setAttribute('content', getTranslation(key));
+            } else {
+                element.textContent = getTranslation(key);
+            }
+        });
+
+        // Special handling for elements with dynamic content or attributes
+        if (buttons.langSwitch) {
+            buttons.langSwitch.textContent = getTranslation('language_switch_btn');
+        }
+        // Update placeholders for input fields if any
+        // document.getElementById('someInput').placeholder = getTranslation('input_placeholder_key');
+
+        // Update finger card descriptions and levels
+        document.querySelectorAll('.finger-card').forEach(card => {
+            const fingers = card.dataset.fingers;
+            updateElement(card.querySelector('h3'), getTranslation(`fingers_${fingers}_name`));
+            updateElement(card.querySelector('.finger-description'), getTranslation(`fingers_${fingers}_desc`));
+            updateElement(card.querySelector('.level-badge'), getTranslation(`fingers_${fingers}_level`));
+            // Update features list (assuming they are always 2 features)
+            const featuresList = card.querySelectorAll('.finger-features li span');
+            if (featuresList[0]) updateElement(featuresList[0], getTranslation(`fingers_${fingers}_feat1`));
+            if (featuresList[1]) updateElement(featuresList[1], getTranslation(`fingers_${fingers}_feat2`));
+        });
+
+        // Update sensitivity explanations if already calculated
+        if (currentSelection.sensitivityResult) {
+            displaySensitivityValues(currentSelection.sensitivityResult.sensitivity);
+        }
+        // Update recommendations if already calculated
+        if (currentSelection.sensitivityResult) {
+            displayRecommendations(currentSelection.sensitivityResult.recommendations);
+        }
+        // Update compatibility info if already calculated
+        if (currentSelection.deviceInfo) {
+            displayCompatibilityInfo();
+        }
+    }
 
     function setupEventListeners() {
         // Game selection
@@ -82,6 +167,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (buttons.shareSettings) {
             buttons.shareSettings.addEventListener("click", shareSettings);
+        }
+
+        // Language switch button
+        if (buttons.langSwitch) {
+            buttons.langSwitch.addEventListener("click", toggleLanguage);
+        }
+    }
+
+    async function toggleLanguage() {
+        currentLanguage = (currentLanguage === 'ar') ? 'en' : 'ar';
+        localStorage.setItem('lang', currentLanguage);
+        await loadTranslations();
+        translatePage();
+        // Re-render dynamic content that depends on language
+        if (currentSelection.deviceInfo) {
+            updateDeviceInfoDisplay();
+        }
+        if (currentSelection.fingerCount) {
+            updateFingerSummary();
+        }
+        if (currentSelection.sensitivityResult) {
+            calculateAndDisplaySensitivity();
         }
     }
 
@@ -132,13 +239,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function selectFingerCount(count) {
         currentSelection.fingerCount = count;
-        
+
         // Update UI to show selection
         document.querySelectorAll('.finger-card').forEach(card => {
             card.classList.remove('selected');
         });
         document.querySelector(`[data-fingers="${count}"]`).classList.add('selected');
-        
+
         // Auto-advance after a short delay
         setTimeout(() => {
             navigateTo("device");
@@ -157,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
             message.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
                     <div class="spinner" style="width: 20px; height: 20px;"></div>
-                    <span>جارٍ اكتشاف نوع الجهاز...</span>
+                    <span>${getTranslation("detecting_device_message")}</span>
                 </div>
             `;
         }
@@ -166,18 +273,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const deviceInfo = await deviceDetector.detectDevice();
             currentSelection.deviceType = deviceInfo.deviceType;
             currentSelection.deviceInfo = deviceInfo;
-            
+
             if (message) {
                 message.innerHTML = `
                     <div style="color: var(--success-color); text-align: center;">
                         <i class="fas fa-check-circle" style="margin-left: 0.5rem;"></i>
-                        تم اكتشاف ${getDeviceTypeArabic(deviceInfo.deviceType)} بنجاح
+                        ${getTranslation("device_detected_success", { deviceType: getDeviceTypeArabic(deviceInfo.deviceType) })}
                         <br>
-                        <small>دقة الاكتشاف: ${deviceInfo.accuracy}%</small>
+                        <small>${getTranslation("detection_accuracy")} ${deviceInfo.accuracy}%</small>
                     </div>
                 `;
             }
-            
+
             setTimeout(() => {
                 navigateTo("result");
             }, 1500);
@@ -187,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 message.innerHTML = `
                     <div style="color: var(--danger-color); text-align: center;">
                         <i class="fas fa-exclamation-triangle" style="margin-left: 0.5rem;"></i>
-                        فشل في الاكتشاف التلقائي، يرجى الاختيار يدوياً
+                        ${getTranslation("auto_detection_failed")}
                     </div>
                 `;
             }
@@ -198,6 +305,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Show detection status
         if (pages.detectionStatus) {
             pages.detectionStatus.style.display = "block";
+            updateElement(pages.detectionStatus.querySelector('h3'), getTranslation("analyzing_device"));
+            updateElement(pages.detectionStatus.querySelector('p'), getTranslation("please_wait_analysis"));
         }
         if (pages.deviceInfo) {
             pages.deviceInfo.style.opacity = "0.5";
@@ -214,13 +323,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Update device information display
             updateDeviceInfoDisplay();
-            
+
             // Update finger selection summary
             updateFingerSummary();
-            
+
             // Calculate and display sensitivity
             calculateAndDisplaySensitivity();
-            
+
             // Hide detection status and show results
             setTimeout(() => {
                 if (pages.detectionStatus) {
@@ -243,13 +352,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const formatted = deviceDetector.formatForDisplay();
 
         // Update device specs
-        updateElement("device-name", formatted.deviceName);
-        updateElement("device-os", formatted.os);
-        updateElement("device-ram", formatted.ram);
-        updateElement("device-cpu", formatted.cpu);
-        updateElement("device-gpu", formatted.gpu);
-        updateElement("device-resolution", formatted.resolution);
-        updateElement("device-touch", `${formatted.touchPoints} نقطة`);
+        updateElement("device-name", getTranslation(formatted.deviceName) === formatted.deviceName ? formatted.deviceName : getTranslation(formatted.deviceName));
+        updateElement("device-os", getTranslation(formatted.os) === formatted.os ? formatted.os : getTranslation(formatted.os));
+        updateElement("device-ram", getTranslation(formatted.ram) === formatted.ram ? formatted.ram : getTranslation(formatted.ram));
+        updateElement("device-cpu", getTranslation(formatted.cpu) === formatted.cpu ? formatted.cpu : getTranslation(formatted.cpu));
+        updateElement("device-gpu", getTranslation(formatted.gpu) === formatted.gpu ? formatted.gpu : getTranslation(formatted.gpu));
+        updateElement("device-resolution", getTranslation(formatted.resolution) === formatted.resolution ? formatted.resolution : getTranslation(formatted.resolution));
+        updateElement("device-touch", `${formatted.touchPoints} ${getTranslation("fingers_plural")}`); // Assuming "نقاط اللمس" or "Touch Points"
         updateElement("device-performance", `${formatted.performanceScore}/100`);
         updateElement("detection-accuracy", `${formatted.accuracy}%`);
 
@@ -266,10 +375,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateFingerSummary() {
         const fingerProfile = sensitivityDB.fingerProfiles[currentSelection.fingerCount];
-        
+
         updateElement("selected-finger-count", currentSelection.fingerCount.toString());
-        updateElement("selected-finger-name", fingerProfile?.name || `${currentSelection.fingerCount} أصابع`);
-        updateElement("selected-finger-description", fingerProfile?.description || "");
+        updateElement("selected-finger-name", getTranslation(fingerProfile?.name || `fingers_${currentSelection.fingerCount}_name`));
+        updateElement("selected-finger-description", getTranslation(fingerProfile?.description || `fingers_${currentSelection.fingerCount}_desc`));
+        updateElement(document.getElementById("selected-finger-count").nextElementSibling, getTranslation("fingers_plural")); // Update "أصابع" / "Fingers"
     }
 
     function calculateAndDisplaySensitivity() {
@@ -279,15 +389,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentSelection.fingerCount,
                 currentSelection.sensitivityType
             );
-            
+
             currentSelection.sensitivityResult = result;
-            
+
             // Update sensitivity values
             displaySensitivityValues(result.sensitivity);
-            
+
             // Update confidence
             updateElement("sensitivity-confidence", `${result.confidence}%`);
-            
+
             // Update confidence badge color
             const confidenceBadge = document.querySelector('.confidence-badge');
             if (confidenceBadge && result.confidence >= 80) {
@@ -297,13 +407,13 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 confidenceBadge.style.background = 'var(--danger-color)';
             }
-            
+
             // Display recommendations
             displayRecommendations(result.recommendations);
-            
+
             // Display compatibility info
             displayCompatibilityInfo();
-            
+
         } catch (error) {
             console.error('Sensitivity calculation failed:', error);
             showSensitivityError();
@@ -314,20 +424,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const container = document.getElementById("sensitivity-values");
         if (!container) return;
 
-        const explanations = sensitivityDB.getSensitivityExplanation();
+        const explanations = sensitivityDB.getSensitivityExplanation(); // This returns keys
         container.innerHTML = "";
 
         Object.entries(sensitivity).forEach(([key, value]) => {
             const item = document.createElement("div");
             item.className = "sensitivity-item";
-            
-            const label = explanations[key] || key;
-            
+
+            const label = getTranslation(explanations[key]); // Get translated explanation
+
             item.innerHTML = `
                 <span class="sense-label">${label}</span>
                 <span class="sense-value">${value}</span>
             `;
-            
+
             container.appendChild(item);
         });
     }
@@ -337,13 +447,30 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!container || !recommendations) return;
 
         container.innerHTML = "";
-        
-        recommendations.forEach(recommendation => {
+
+        recommendations.forEach(recKey => { // recKey can be a direct key or "key|param1|param2"
+            const parts = recKey.split('|');
+            let translatedText = '';
+
+            if (parts[0] === 'finger_style_recommendation_prefix') {
+                const fingerNameKey = parts[1];
+                const descriptionKey = parts[2];
+                translatedText = getTranslation('finger_style_recommendation_prefix', {
+                    fingerName: getTranslation(fingerNameKey),
+                    description: getTranslation(descriptionKey)
+                });
+            } else if (parts[0] === 'finger_style_advantage_prefix') {
+                const advantageKey = parts[1];
+                translatedText = getTranslation('finger_style_advantage_prefix') + getTranslation(advantageKey);
+            } else {
+                translatedText = getTranslation(recKey); // Direct key
+            }
+
             const item = document.createElement("div");
             item.className = "recommendation-item";
             item.innerHTML = `
                 <i class="fas fa-lightbulb"></i>
-                ${recommendation}
+                ${translatedText}
             `;
             container.appendChild(item);
         });
@@ -352,44 +479,38 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayCompatibilityInfo() {
         const compatibility = sensitivityDB.getDeviceCompatibility(currentSelection.deviceInfo);
         
-        updateElement("freefire-support", compatibility.freefire_support);
-        updateElement("recommended-settings", compatibility.recommended_settings);
-        updateElement("expected-fps", compatibility.expected_fps);
-        updateElement("battery-life", compatibility.battery_life);
+        updateElement("freefire-support", getTranslation(compatibility.freefire_support_key));
+        updateElement("recommended-settings", getTranslation(compatibility.recommended_settings_key));
+        updateElement("expected-fps", compatibility.expected_fps); // FPS is numeric, not translated
+        updateElement("battery-life", getTranslation(compatibility.battery_life_key));
     }
 
     // Action functions
     function testSensitivity() {
         const sensitivity = currentSelection.sensitivityResult?.sensitivity;
         if (!sensitivity) {
-            alert("لم يتم حساب الحساسية بعد!");
+            alert(getTranslation("sensitivity_not_calculated"));
             return;
         }
 
-        const message = `
-إعدادات الحساسية المثالية لجهازك:
+        let message = `${getTranslation("optimal_sensitivity_title")}:\n\n`;
+        Object.entries(sensitivity).forEach(([key, value]) => {
+            message += `${getTranslation(`sensitivity_${key}`)}: ${value}\n`;
+        });
+        message += `\n${getTranslation("copy_settings_instruction")}`; // Add instruction to copy
 
-${Object.entries(sensitivity).map(([key, value]) => {
-    const explanations = sensitivityDB.getSensitivityExplanation();
-    return `${explanations[key] || key}: ${value}`;
-}).join('\n')}
-
-انسخ هذه القيم وطبقها في إعدادات فري فاير.
-        `;
-        
         alert(message);
     }
 
     async function copySettings() {
         const sensitivity = currentSelection.sensitivityResult?.sensitivity;
         if (!sensitivity) {
-            alert("لم يتم حساب الحساسية بعد!");
+            alert(getTranslation("sensitivity_not_calculated"));
             return;
         }
 
         const text = Object.entries(sensitivity).map(([key, value]) => {
-            const explanations = sensitivityDB.getSensitivityExplanation();
-            return `${explanations[key] || key}: ${value}`;
+            return `${getTranslation(`sensitivity_${key}`)}: ${value}`;
         }).join('\n');
 
         try {
@@ -398,7 +519,7 @@ ${Object.entries(sensitivity).map(([key, value]) => {
             // Show success feedback
             const button = buttons.copySettings;
             const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+            button.innerHTML = `<i class="fas fa-check"></i> ${getTranslation("copy_success")}`;
             button.style.background = 'var(--success-color)';
             
             setTimeout(() => {
@@ -408,7 +529,7 @@ ${Object.entries(sensitivity).map(([key, value]) => {
             
         } catch (error) {
             console.error('Copy failed:', error);
-            alert("فشل في نسخ الإعدادات. يرجى النسخ يدوياً.");
+            alert(getTranslation("copy_failed"));
         }
     }
 
@@ -417,44 +538,45 @@ ${Object.entries(sensitivity).map(([key, value]) => {
         const deviceInfo = currentSelection.deviceInfo;
         
         if (!sensitivity || !deviceInfo) {
-            alert("لم يتم حساب الحساسية بعد!");
+            alert(getTranslation("sensitivity_not_calculated"));
             return;
         }
 
-        const shareText = `
-🎮 إعدادات فري فاير المثالية
+        const settingsText = Object.entries(sensitivity).map(([key, value]) => {
+            return `${getTranslation(`sensitivity_${key}`)}: ${value}`;
+        }).join('\n');
 
-📱 الجهاز: ${deviceInfo.deviceName}
-✋ عدد الأصابع: ${currentSelection.fingerCount}
-🎯 دقة الحساسية: ${currentSelection.sensitivityResult.confidence}%
-
-⚙️ الإعدادات:
-${Object.entries(sensitivity).map(([key, value]) => {
-    const explanations = sensitivityDB.getSensitivityExplanation();
-    return `${explanations[key] || key}: ${value}`;
-}).join('\n')}
-
-🔗 احصل على إعداداتك المخصصة من: Vandam Egy Tool
-        `;
+        const shareText = getTranslation("share_text_template", {
+            deviceName: getTranslation(deviceInfo.deviceName) === deviceInfo.deviceName ? deviceInfo.deviceName : getTranslation(deviceInfo.deviceName), // Translate if it's a key
+            fingerCount: currentSelection.fingerCount,
+            confidence: currentSelection.sensitivityResult.confidence,
+            settings: settingsText
+        });
 
         if (navigator.share) {
             navigator.share({
-                title: 'إعدادات فري فاير المثالية',
+                title: getTranslation("share_title"),
                 text: shareText
             }).catch(console.error);
         } else {
             // Fallback: copy to clipboard
             navigator.clipboard.writeText(shareText).then(() => {
-                alert("تم نسخ الإعدادات للمشاركة!");
+                alert(getTranslation("share_copy_alert"));
             }).catch(() => {
-                alert("فشل في المشاركة. يرجى النسخ يدوياً.");
+                alert(getTranslation("share_failed_alert"));
             });
         }
     }
 
     // Utility functions
-    function updateElement(id, value) {
-        const element = document.getElementById(id);
+    function updateElement(elementOrId, value) {
+        let element;
+        if (typeof elementOrId === 'string') {
+            element = document.getElementById(elementOrId);
+        } else {
+            element = elementOrId;
+        }
+
         if (element) {
             element.textContent = value;
         }
@@ -462,10 +584,10 @@ ${Object.entries(sensitivity).map(([key, value]) => {
 
     function getDeviceTypeArabic(deviceType) {
         const types = {
-            mobile: "هاتف محمول",
-            tablet: "تابلت",
-            desktop: "كمبيوتر",
-            unknown: "جهاز غير معروف"
+            mobile: getTranslation("mobile_btn"),
+            tablet: getTranslation("tablet_btn"),
+            desktop: getTranslation("pc_btn"),
+            unknown: getTranslation("unknown_device")
         };
         return types[deviceType] || deviceType;
     }
@@ -475,8 +597,8 @@ ${Object.entries(sensitivity).map(([key, value]) => {
             pages.detectionStatus.innerHTML = `
                 <div style="text-align: center; color: var(--danger-color);">
                     <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <h3>فشل في اكتشاف الجهاز</h3>
-                    <p>سيتم استخدام إعدادات افتراضية</p>
+                    <h3>${getTranslation("detection_error_title")}</h3>
+                    <p>${getTranslation("detection_error_message")}</p>
                 </div>
             `;
         }
@@ -493,7 +615,7 @@ ${Object.entries(sensitivity).map(([key, value]) => {
             container.innerHTML = `
                 <div style="text-align: center; color: var(--danger-color); grid-column: 1 / -1;">
                     <i class="fas fa-exclamation-triangle"></i>
-                    فشل في حساب الحساسية. يرجى المحاولة مرة أخرى.
+                    ${getTranslation("sensitivity_error_message")}
                 </div>
             `;
         }
@@ -507,4 +629,3 @@ ${Object.entries(sensitivity).map(([key, value]) => {
         document.body.style.opacity = '1';
     }, 100);
 });
-
