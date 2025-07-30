@@ -126,14 +126,10 @@ class FreeFireSensitivityDatabase {
         return {
             // Popular mobile devices with specific optimizations
             mobile: {
-                'iPhone 15 Pro': { category: 'high_performance', gpu: 'flagship', screen: 'medium' },
-                'iPhone 15': { category: 'high_performance', gpu: 'high', screen: 'medium' },
-                'iPhone 14 Pro': { category: 'high_performance', gpu: 'flagship', screen: 'medium' },
-                'iPhone 14': { category: 'high_performance', gpu: 'high', screen: 'medium' },
-                'iPhone 13 Pro': { category: 'high_performance', gpu: 'high', screen: 'medium' },
-                'iPhone 13': { category: 'medium_performance', gpu: 'high', screen: 'medium' },
-                'iPhone 12': { category: 'medium_performance', gpu: 'medium', screen: 'medium' },
-                'iPhone 11': { category: 'medium_performance', gpu: 'medium', screen: 'medium' },
+                'iPhone (iOS 17.0)': { category: 'high_performance', gpu: 'flagship', screen: 'medium' }, // Example with OS version
+                'iPhone (iOS 16.0)': { category: 'high_performance', gpu: 'high', screen: 'medium' },
+                'iPhone (iOS 15.0)': { category: 'medium_performance', gpu: 'high', screen: 'medium' },
+                'iPhone (iOS 14.0)': { category: 'medium_performance', gpu: 'medium', screen: 'medium' },
                 'iPhone SE': { category: 'medium_performance', gpu: 'medium', screen: 'small' },
                 
                 'Samsung Galaxy S24 Ultra': { category: 'high_performance', gpu: 'flagship', screen: 'large' },
@@ -146,7 +142,9 @@ class FreeFireSensitivityDatabase {
                 'Samsung Galaxy A54': { category: 'medium_performance', gpu: 'medium', screen: 'medium' },
                 'Samsung Galaxy A34': { category: 'medium_performance', gpu: 'medium', screen: 'medium' },
                 'Samsung Galaxy A14': { category: 'low_performance', gpu: 'low', screen: 'medium' },
+                'Samsung Galaxy A13': { category: 'low_performance', gpu: 'low', screen: 'medium' }, // Added A13
                 
+                'Xiaomi 12 Pro': { category: 'high_performance', gpu: 'flagship', screen: 'large' }, // Added Xiaomi 12 Pro
                 'Xiaomi 14 Ultra': { category: 'high_performance', gpu: 'flagship', screen: 'large' },
                 'Xiaomi 14': { category: 'high_performance', gpu: 'high', screen: 'medium' },
                 'Xiaomi 13 Pro': { category: 'high_performance', gpu: 'high', screen: 'large' },
@@ -156,6 +154,8 @@ class FreeFireSensitivityDatabase {
                 'Xiaomi Redmi Note 13': { category: 'medium_performance', gpu: 'medium', screen: 'medium' },
                 'Xiaomi Redmi 13C': { category: 'low_performance', gpu: 'low', screen: 'medium' },
                 
+                'Oppo Reno 8': { category: 'medium_performance', gpu: 'medium', screen: 'medium' }, // Added Oppo Reno 8
+                'Oppo Reno 6': { category: 'medium_performance', gpu: 'medium', screen: 'medium' }, // Added Oppo Reno 6
                 'OnePlus 12': { category: 'high_performance', gpu: 'flagship', screen: 'large' },
                 'OnePlus 11': { category: 'high_performance', gpu: 'high', screen: 'large' },
                 'OnePlus 10 Pro': { category: 'high_performance', gpu: 'high', screen: 'large' },
@@ -187,7 +187,14 @@ class FreeFireSensitivityDatabase {
                 'Samsung Galaxy Tab S9 Ultra': { category: 'high_performance', gpu: 'flagship', screen: 'xlarge' },
                 'Samsung Galaxy Tab S9+': { category: 'high_performance', gpu: 'high', screen: 'large' },
                 'Samsung Galaxy Tab S9': { category: 'high_performance', gpu: 'high', screen: 'large' },
-                'Samsung Galaxy Tab A9+': { category: 'medium_performance', gpu: 'medium', screen: 'large' }
+                'Samsung Galaxy Tab A9+': { category: 'medium_performance', gpu: 'medium', screen: 'large' },
+                'Lenovo Tab P11 Pro Gen 2': { category: 'medium_performance', gpu: 'medium', screen: 'large' } // Example Lenovo Tablet
+            },
+            // Desktop profiles (more generic as specific models are less relevant for sensitivity)
+            desktop: {
+                'Windows PC/Laptop': { category: 'medium_performance', gpu: 'medium', screen: 'xlarge' },
+                'Mac': { category: 'high_performance', gpu: 'high', screen: 'xlarge' },
+                'Linux PC': { category: 'medium_performance', gpu: 'medium', screen: 'xlarge' }
             }
         };
     }
@@ -196,43 +203,43 @@ class FreeFireSensitivityDatabase {
     initializeFingerProfiles() {
         return {
             2: {
-                name: 'إصبعان',
-                description: 'الأسلوب التقليدي - مناسب للمبتدئين',
-                advantages: ['سهل التعلم', 'مريح لفترات طويلة', 'دقة جيدة في التصويب'],
-                disadvantages: ['حركة محدودة', 'صعوبة في المناورات السريعة'],
-                recommended_for: ['المبتدئين', 'اللعب العادي', 'الألعاب الطويلة'],
+                name: 'fingers_2_name', // Key for translation
+                description: 'fingers_2_desc', // Key for translation
+                advantages: ['fingers_2_feat1', 'fingers_2_feat2'], // Keys for translation
+                disadvantages: ['disadvantages_2_1', 'disadvantages_2_2'], // Example, add to lang files
+                recommended_for: ['recommended_for_2_1', 'recommended_for_2_2'], // Example, add to lang files
                 sensitivity_modifier: 0
             },
             3: {
-                name: 'ثلاثة أصابع',
-                description: 'توازن بين السهولة والأداء',
-                advantages: ['مرونة أكبر', 'إمكانية الحركة أثناء التصويب', 'تحكم أفضل'],
-                disadvantages: ['يحتاج تدريب', 'قد يكون صعب في البداية'],
-                recommended_for: ['اللاعبين المتوسطين', 'الألعاب التنافسية'],
+                name: 'fingers_3_name',
+                description: 'fingers_3_desc',
+                advantages: ['fingers_3_feat1', 'fingers_3_feat2'],
+                disadvantages: ['disadvantages_3_1', 'disadvantages_3_2'],
+                recommended_for: ['recommended_for_3_1', 'recommended_for_3_2'],
                 sensitivity_modifier: 0.05
             },
             4: {
-                name: 'أربعة أصابع',
-                description: 'الأسلوب الأكثر شيوعاً بين المحترفين',
-                advantages: ['تحكم ممتاز', 'مناورات سريعة', 'دقة عالية', 'إمكانيات متقدمة'],
-                disadvantages: ['يحتاج تدريب مكثف', 'قد يسبب تعب'],
-                recommended_for: ['اللاعبين المتقدمين', 'البطولات', 'الرانك العالي'],
+                name: 'fingers_4_name',
+                description: 'fingers_4_desc',
+                advantages: ['fingers_4_feat1', 'fingers_4_feat2'],
+                disadvantages: ['disadvantages_4_1', 'disadvantages_4_2'],
+                recommended_for: ['recommended_for_4_1', 'recommended_for_4_2'],
                 sensitivity_modifier: 0.1
             },
             5: {
-                name: 'خمسة أصابع',
-                description: 'أسلوب متقدم للمحترفين',
-                advantages: ['تحكم كامل', 'سرعة فائقة', 'مناورات معقدة'],
-                disadvantages: ['صعب جداً', 'يحتاج شاشة كبيرة', 'تعب سريع'],
-                recommended_for: ['المحترفين فقط', 'الشاشات الكبيرة'],
+                name: 'fingers_5_name',
+                description: 'fingers_5_desc',
+                advantages: ['fingers_5_feat1', 'fingers_5_feat2'],
+                disadvantages: ['disadvantages_5_1', 'disadvantages_5_2'],
+                recommended_for: ['recommended_for_5_1', 'recommended_for_5_2'],
                 sensitivity_modifier: 0.15
             },
             6: {
-                name: 'ستة أصابع',
-                description: 'الأسلوب الأكثر تقدماً - للخبراء فقط',
-                advantages: ['أقصى تحكم ممكن', 'سرعة خارقة', 'إمكانيات لا محدودة'],
-                disadvantages: ['صعب للغاية', 'يحتاج شاشة كبيرة جداً', 'إجهاد شديد'],
-                recommended_for: ['الخبراء المحترفين', 'الشاشات الكبيرة جداً'],
+                name: 'fingers_6_name',
+                description: 'fingers_6_desc',
+                advantages: ['fingers_6_feat1', 'fingers_6_feat2'],
+                disadvantages: ['disadvantages_6_1', 'disadvantages_6_2'],
+                recommended_for: ['recommended_for_6_1', 'recommended_for_6_2'],
                 sensitivity_modifier: 0.2
             }
         };
@@ -283,13 +290,14 @@ class FreeFireSensitivityDatabase {
     determineDeviceCategory(deviceInfo) {
         let score = 0;
         
-        // RAM scoring
+        // RAM scoring (more granular impact)
         const ram = deviceInfo.ram || 4;
-        if (ram >= 12) score += 30;
+        if (ram >= 16) score += 35; // Very high RAM
+        else if (ram >= 12) score += 30;
         else if (ram >= 8) score += 25;
         else if (ram >= 6) score += 20;
         else if (ram >= 4) score += 15;
-        else score += 10;
+        else score += 10; // Low RAM
         
         // CPU scoring
         const cpuCores = deviceInfo.cpuCores || 4;
@@ -300,11 +308,21 @@ class FreeFireSensitivityDatabase {
         
         // GPU scoring (based on GPU string analysis)
         const gpu = (deviceInfo.gpu || '').toLowerCase();
-        if (gpu.includes('adreno 750') || gpu.includes('apple a17') || gpu.includes('apple m')) {
+        if (gpu.includes('adreno 750') || 
+            gpu.includes('apple a17') || 
+            gpu.includes('apple m') || 
+            gpu.includes('snapdragon 8 gen 3')) {
             score += 30; // Flagship
-        } else if (gpu.includes('adreno 7') || gpu.includes('mali-g78') || gpu.includes('apple a15') || gpu.includes('apple a16')) {
+        } else if (gpu.includes('adreno 7') || 
+                   gpu.includes('mali-g78') || 
+                   gpu.includes('apple a15') || 
+                   gpu.includes('apple a16') ||
+                   gpu.includes('snapdragon 8')) {
             score += 25; // High-end
-        } else if (gpu.includes('adreno 6') || gpu.includes('mali-g') || gpu.includes('apple a14')) {
+        } else if (gpu.includes('adreno 6') || 
+                   gpu.includes('mali-g') || 
+                   gpu.includes('apple a14') ||
+                   gpu.includes('snapdragon 7')) {
             score += 20; // Medium-high
         } else if (gpu.includes('adreno') || gpu.includes('mali') || gpu.includes('apple')) {
             score += 15; // Medium
@@ -312,9 +330,9 @@ class FreeFireSensitivityDatabase {
             score += 10; // Low/Unknown
         }
         
-        // Performance score from device detection
+        // Performance score from device detection (overallScore)
         if (deviceInfo.overallScore) {
-            score += Math.round(deviceInfo.overallScore * 0.15);
+            score += Math.round(deviceInfo.overallScore * 0.15); // Add a weighted performance score
         }
         
         // Device-specific profile lookup
@@ -326,8 +344,8 @@ class FreeFireSensitivityDatabase {
         }
         
         // Categorize based on total score
-        if (score >= 80) return 'high_performance';
-        if (score >= 60) return 'medium_performance';
+        if (score >= 90) return 'high_performance'; // Higher threshold for high performance
+        if (score >= 65) return 'medium_performance';
         return 'low_performance';
     }
 
@@ -431,42 +449,44 @@ class FreeFireSensitivityDatabase {
         return adjusted;
     }
 
-    // Generate personalized recommendations
+    // Generate personalized recommendations (returns keys for translation)
     generateRecommendations(deviceInfo, fingerCount, deviceCategory) {
         const recommendations = [];
         
         // Device-specific recommendations
         if (deviceCategory === 'low_performance') {
-            recommendations.push('قم بإغلاق التطبيقات الأخرى لتحسين الأداء');
-            recommendations.push('استخدم إعدادات الجرافيك المنخفضة في اللعبة');
-            recommendations.push('تأكد من شحن البطارية لتجنب انخفاض الأداء');
+            recommendations.push('low_performance_recommendation_1');
+            recommendations.push('low_performance_recommendation_2');
+            recommendations.push('low_performance_recommendation_3');
         } else if (deviceCategory === 'high_performance') {
-            recommendations.push('يمكنك استخدام إعدادات الجرافيك العالية');
-            recommendations.push('جرب معدل الإطارات العالي إذا كان متاحاً');
+            recommendations.push('high_performance_recommendation_1');
+            recommendations.push('high_performance_recommendation_2');
         }
         
         // Finger count recommendations
         const fingerProfile = this.fingerProfiles[fingerCount];
         if (fingerProfile) {
-            recommendations.push(`أسلوب ${fingerProfile.name}: ${fingerProfile.description}`);
-            fingerProfile.advantages.forEach(advantage => {
-                recommendations.push(`✓ ${advantage}`);
+            // These are dynamic, so we'll pass the full string to script.js to be translated with placeholders
+            // The format "key|param1|param2" will be parsed in script.js
+            recommendations.push(`finger_style_recommendation_prefix|${fingerProfile.name}|${fingerProfile.description}`);
+            fingerProfile.advantages.forEach(advantageKey => { // advantageKey is already a key
+                recommendations.push(`finger_style_advantage_prefix|${advantageKey}`);
             });
             
             if (fingerCount >= 4) {
-                recommendations.push('تدرب في التدريب قبل اللعب التنافسي');
-                recommendations.push('استخدم حامل للهاتف لتقليل التعب');
+                recommendations.push('advanced_finger_training_tip');
+                recommendations.push('advanced_finger_holder_tip');
             }
         }
         
         // Screen size recommendations
         if (deviceInfo.deviceType === 'mobile' && fingerCount >= 5) {
-            recommendations.push('قد تحتاج شاشة أكبر لاستخدام 5+ أصابع بفعالية');
+            recommendations.push('large_screen_needed_tip');
         }
         
         // Performance recommendations
         if (deviceInfo.ram && deviceInfo.ram < 4) {
-            recommendations.push('فكر في ترقية الجهاز لتحسين تجربة اللعب');
+            recommendations.push('consider_upgrade_tip');
         }
         
         return recommendations;
@@ -480,11 +500,12 @@ class FreeFireSensitivityDatabase {
         if (deviceInfo.deviceName && !deviceInfo.deviceName.includes('Unknown')) confidence += 15;
         if (deviceInfo.ram && deviceInfo.ram > 0) confidence += 10;
         if (deviceInfo.cpuCores && deviceInfo.cpuCores > 0) confidence += 10;
-        if (deviceInfo.gpu && !deviceInfo.gpu.includes('غير معروف')) confidence += 10;
+        if (deviceInfo.gpu && !deviceInfo.gpu.includes('غير معروف')) confidence += 10; // Check if GPU was successfully detected
         if (deviceInfo.accuracy && deviceInfo.accuracy > 70) confidence += 15;
         
         // Device profile match
-        const deviceProfile = this.deviceProfiles[deviceInfo.deviceType]?.[deviceInfo.deviceName];
+        const deviceName = deviceInfo.deviceName || '';
+        const deviceProfile = this.deviceProfiles[deviceInfo.deviceType]?.[deviceName];
         if (deviceProfile) confidence += 20;
         
         return Math.min(100, confidence);
@@ -503,44 +524,45 @@ class FreeFireSensitivityDatabase {
             deviceCategory: 'medium_performance',
             fingerCount: fingerCount || 4,
             fingerProfile: this.fingerProfiles[fingerCount || 4],
-            recommendations: ['استخدم هذه القيم كنقطة بداية وقم بتعديلها حسب تفضيلك'],
+            recommendations: ['fallback_sensitivity_tip'], // Returns key
             confidence: 30
         };
     }
 
-    // Get sensitivity explanation for users
+    // Get sensitivity explanation for users (returns keys for translation)
     getSensitivityExplanation() {
         return {
-            general: 'الحساسية العامة - تؤثر على سرعة دوران الكاميرا العادية',
-            red_dot: 'حساسية النقطة الحمراء - للتصويب بالمنظار الأحمر',
-            scope_2x: 'حساسية المنظار 2x - للتصويب بالمنظار المتوسط',
-            scope_4x: 'حساسية المنظار 4x - للتصويب بالمنظار البعيد',
-            sniper: 'حساسية القناص - للتصويب بمناظير القناصة',
-            free_look: 'النظر الحر - للنظر حولك دون تحريك السلاح'
+            general: 'sensitivity_general',
+            red_dot: 'sensitivity_red_dot',
+            scope_2x: 'sensitivity_scope_2x',
+            scope_4x: 'sensitivity_scope_4x',
+            sniper: 'sensitivity_sniper',
+            free_look: 'sensitivity_free_look'
         };
     }
 
-    // Get device compatibility info
+    // Get device compatibility info (returns keys for translation)
     getDeviceCompatibility(deviceInfo) {
         const compatibility = {
-            freefire_support: 'مدعوم',
-            recommended_settings: 'متوسط',
-            expected_fps: '30-60',
-            battery_life: 'متوسط',
-            heating: 'طبيعي'
+            freefire_support_key: 'supported_status',
+            recommended_settings_key: 'medium_status',
+            expected_fps: '30-60', // FPS values remain numeric
+            battery_life_key: 'medium_status',
+            heating_key: 'normal_status'
         };
         
         const category = this.determineDeviceCategory(deviceInfo);
         
         if (category === 'high_performance') {
-            compatibility.recommended_settings = 'عالي';
+            compatibility.recommended_settings_key = 'high_status';
             compatibility.expected_fps = '60-90';
-            compatibility.battery_life = 'جيد';
+            compatibility.battery_life_key = 'good_status'; 
+            compatibility.heating_key = 'normal_status';
         } else if (category === 'low_performance') {
-            compatibility.recommended_settings = 'منخفض';
+            compatibility.recommended_settings_key = 'low_status';
             compatibility.expected_fps = '20-30';
-            compatibility.battery_life = 'محدود';
-            compatibility.heating = 'قد يسخن';
+            compatibility.battery_life_key = 'limited_status';
+            compatibility.heating_key = 'may_heat_status';
         }
         
         return compatibility;
@@ -549,4 +571,3 @@ class FreeFireSensitivityDatabase {
 
 // Export for use in main application
 window.FreeFireSensitivityDatabase = FreeFireSensitivityDatabase;
-
