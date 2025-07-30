@@ -53,6 +53,8 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    display: flex; /* Added for layout */
+    justify-content: center; /* Added for layout */
 }
 
 .header-content {
@@ -63,6 +65,8 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    position: relative; /* Added for language button positioning */
+    width: 100%; /* Added for language button positioning */
 }
 
 .logo {
@@ -82,6 +86,27 @@ body {
     color: var(--text-secondary);
     font-size: 0.9rem;
     margin-top: 0.25rem;
+}
+
+/* Language Switch Button */
+.lang-switch-btn {
+    position: absolute;
+    top: 1rem; /* Adjust as needed */
+    left: 1rem; /* Adjust for RTL/LTR */
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+    z-index: 101; /* Ensure it's above other elements */
+}
+
+.lang-switch-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
 }
 
 /* Page Management */
@@ -129,7 +154,7 @@ body {
 
 .back-btn {
     position: absolute;
-    right: 0;
+    right: 0; /* Default for RTL */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.2);
@@ -633,8 +658,8 @@ body {
 }
 
 .info-header h2 i {
+    margin-left: 0.5rem; /* Default for RTL */
     color: var(--primary-color);
-    margin-left: 0.5rem;
 }
 
 .accuracy-badge {
@@ -707,8 +732,8 @@ body {
 }
 
 .finger-summary h3 i {
+    margin-left: 0.5rem; /* Default for RTL */
     color: var(--primary-color);
-    margin-left: 0.5rem;
 }
 
 .selected-finger-info {
@@ -771,8 +796,8 @@ body {
 }
 
 .sensitivity-header h2 i {
+    margin-left: 0.5rem; /* Default for RTL */
     color: var(--primary-color);
-    margin-left: 0.5rem;
 }
 
 .confidence-badge {
@@ -890,8 +915,8 @@ body {
 }
 
 .recommendations h3 i {
+    margin-left: 0.5rem; /* Default for RTL */
     color: var(--warning-color);
-    margin-left: 0.5rem;
 }
 
 .recommendations-list {
@@ -904,18 +929,18 @@ body {
     background: var(--light-bg);
     border-radius: var(--border-radius);
     padding: 1rem;
-    border-right: 4px solid var(--primary-color);
+    border-right: 4px solid var(--primary-color); /* Default for RTL */
     transition: var(--transition);
 }
 
 .recommendation-item:hover {
     background: #f0f0f0;
-    transform: translateX(5px);
+    transform: translateX(5px); /* Default for RTL */
 }
 
 .recommendation-item i {
+    margin-left: 0.5rem; /* Default for RTL */
     color: var(--primary-color);
-    margin-left: 0.5rem;
 }
 
 /* Compatibility Info */
@@ -933,8 +958,8 @@ body {
 }
 
 .compatibility-info h3 i {
+    margin-left: 0.5rem; /* Default for RTL */
     color: var(--success-color);
-    margin-left: 0.5rem;
 }
 
 .compatibility-grid {
@@ -1063,6 +1088,18 @@ body {
         transform: none;
         margin-bottom: 1rem;
     }
+
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+        padding-top: 3rem; /* Make space for language button */
+    }
+
+    .lang-switch-btn {
+        top: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
 
 @media (max-width: 480px) {
@@ -1087,9 +1124,53 @@ body {
     }
 }
 
+/* RTL/LTR Adjustments */
+html[dir="ltr"] .lang-switch-btn {
+    left: auto;
+    right: 1rem;
+}
+
+html[dir="ltr"] .back-btn {
+    right: auto;
+    left: 0;
+    transform: translateY(-50%) rotate(180deg); /* Rotate arrow for LTR */
+}
+
+html[dir="ltr"] .logo i,
+html[dir="ltr"] .main-title i,
+html[dir="ltr"] .page-header h1 i,
+html[dir="ltr"] .info-header h2 i,
+html[dir="ltr"] .finger-summary h3 i,
+html[dir="ltr"] .sensitivity-header h2 i,
+html[dir="ltr"] .recommendations h3 i,
+html[dir="ltr"] .compatibility-info h3 i,
+html[dir="ltr"] .recommendation-item i {
+    margin-right: 0.5rem;
+    margin-left: 0;
+}
+
+html[dir="ltr"] .option-features i,
+html[dir="ltr"] .finger-features i {
+    margin-right: 0.5rem;
+    margin-left: 0;
+}
+
+html[dir="ltr"] .finger-features {
+    text-align: left;
+}
+
+html[dir="ltr"] .recommendation-item {
+    border-left: 4px solid var(--primary-color);
+    border-right: none;
+}
+
+html[dir="ltr"] .recommendation-item:hover {
+    transform: translateX(-5px);
+}
+
 /* Print Styles */
 @media print {
-    .back-btn, .sensitivity-actions {
+    .back-btn, .sensitivity-actions, .lang-switch-btn {
         display: none;
     }
     
@@ -1108,4 +1189,3 @@ body {
         border: 1px solid #ccc;
     }
 }
-
