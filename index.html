@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Vandam Egy">
-    <meta name="description" content="أدوات إعدادات فري فاير المتقدمة - اكتشاف دقيق للجهاز وحساسية مثالية حسب عدد الأصابع">
-    <title>Vandam Egy - إعدادات فري فاير المتقدمة</title>
+    <meta data-i18n="meta_description" name="description" content="أدوات إعدادات فري فاير المتقدمة - اكتشاف دقيق للجهاز وحساسية مثالية حسب عدد الأصابع">
+    <title data-i18n="app_title">Vandam Egy - إعدادات فري فاير المتقدمة</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -18,7 +18,9 @@
                     <i class="fas fa-crosshairs"></i>
                     <span>Vandam Egy</span>
                 </div>
-                <div class="header-subtitle">إعدادات فري فاير المتقدمة</div>
+                <div class="header-subtitle" data-i18n="header_subtitle">إعدادات فري فاير المتقدمة</div>
+                <!-- Language Switch Button -->
+                <button id="lang-switch-btn" class="lang-switch-btn" data-i18n="language_switch_btn">English</button>
             </div>
         </header>
 
@@ -26,11 +28,11 @@
         <div id="game-selection" class="page active">
             <div class="page-container">
                 <div class="welcome-section">
-                    <h1 class="main-title">
+                    <h1 class="main-title" data-i18n="select_game_title">
                         <i class="fas fa-gamepad"></i>
                         اختر اللعبة
                     </h1>
-                    <p class="subtitle">احصل على إعدادات الحساسية المثالية لجهازك</p>
+                    <p class="subtitle" data-i18n="select_game_subtitle">احصل على إعدادات الحساسية المثالية لجهازك</p>
                 </div>
                 
                 <div class="game-cards">
@@ -38,9 +40,9 @@
                         <div class="card-icon">
                             <i class="fas fa-fire"></i>
                         </div>
-                        <h3>فري فاير</h3>
-                        <p>إعدادات محسنة ودقيقة</p>
-                        <div class="card-badge">الأكثر شيوعاً</div>
+                        <h3 data-i18n="free_fire_game_name">فري فاير</h3>
+                        <p data-i18n="free_fire_description">إعدادات محسنة ودقيقة</p>
+                        <div class="card-badge" data-i18n="most_popular_badge">الأكثر شيوعاً</div>
                     </div>
                 </div>
             </div>
@@ -53,7 +55,7 @@
                     <button class="back-btn" onclick="navigateTo('game')">
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                    <h1>
+                    <h1 data-i18n="select_sensitivity_type_title">
                         <i class="fas fa-sliders-h"></i>
                         اختر نوع الحساسية
                     </h1>
@@ -64,11 +66,11 @@
                         <div class="option-icon">
                             <i class="fas fa-mouse"></i>
                         </div>
-                        <h3>حساسية اللعبة</h3>
-                        <p>الحساسية العامة لحركة الكاميرا</p>
+                        <h3 data-i18n="game_sensitivity_name">حساسية اللعبة</h3>
+                        <p data-i18n="game_sensitivity_description">الحساسية العامة لحركة الكاميرا</p>
                         <div class="option-features">
-                            <span><i class="fas fa-check"></i> مناسبة للمبتدئين</span>
-                            <span><i class="fas fa-check"></i> سهلة التحكم</span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="suitable_for_beginners">مناسبة للمبتدئين</span></span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="easy_to_control">سهلة التحكم</span></span>
                         </div>
                     </div>
                     
@@ -76,13 +78,13 @@
                         <div class="option-icon">
                             <i class="fas fa-crosshairs"></i>
                         </div>
-                        <h3>حساسية التصويب</h3>
-                        <p>حساسية مخصصة لكل نوع منظار</p>
+                        <h3 data-i18n="shoot_sensitivity_name">حساسية التصويب</h3>
+                        <p data-i18n="shoot_sensitivity_description">حساسية مخصصة لكل نوع منظار</p>
                         <div class="option-features">
-                            <span><i class="fas fa-check"></i> دقة عالية</span>
-                            <span><i class="fas fa-check"></i> للمحترفين</span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="high_accuracy">دقة عالية</span></span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="for_professionals">للمحترفين</span></span>
                         </div>
-                        <div class="option-badge">موصى به</div>
+                        <div class="option-badge" data-i18n="recommended_badge">موصى به</div>
                     </div>
                 </div>
             </div>
@@ -95,11 +97,11 @@
                     <button class="back-btn" onclick="navigateTo('sensitivity')">
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                    <h1>
+                    <h1 data-i18n="select_finger_count_title">
                         <i class="fas fa-hand-paper"></i>
                         اختر عدد الأصابع
                     </h1>
-                    <p class="page-description">عدد الأصابع يؤثر على أسلوب اللعب والحساسية المثالية</p>
+                    <p class="page-description" data-i18n="finger_count_description">عدد الأصابع يؤثر على أسلوب اللعب والحساسية المثالية</p>
                 </div>
                 
                 <div class="finger-options">
@@ -108,14 +110,14 @@
                             <i class="fas fa-hand-peace"></i>
                             <span class="finger-count">2</span>
                         </div>
-                        <h3>إصبعان</h3>
-                        <p class="finger-description">الأسلوب التقليدي</p>
+                        <h3 data-i18n="fingers_2_name">إصبعان</h3>
+                        <p class="finger-description" data-i18n="fingers_2_desc">الأسلوب التقليدي</p>
                         <div class="finger-level">
-                            <span class="level-badge beginner">مبتدئ</span>
+                            <span class="level-badge beginner" data-i18n="fingers_2_level">مبتدئ</span>
                         </div>
                         <ul class="finger-features">
-                            <li><i class="fas fa-check"></i> سهل التعلم</li>
-                            <li><i class="fas fa-check"></i> مريح لفترات طويلة</li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_2_feat1">سهل التعلم</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_2_feat2">مريح لفترات طويلة</span></li>
                         </ul>
                     </div>
                     
@@ -124,14 +126,14 @@
                             <i class="fas fa-hand-spock"></i>
                             <span class="finger-count">3</span>
                         </div>
-                        <h3>ثلاثة أصابع</h3>
-                        <p class="finger-description">توازن بين السهولة والأداء</p>
+                        <h3 data-i18n="fingers_3_name">ثلاثة أصابع</h3>
+                        <p class="finger-description" data-i18n="fingers_3_desc">توازن بين السهولة والأداء</p>
                         <div class="finger-level">
-                            <span class="level-badge intermediate">متوسط</span>
+                            <span class="level-badge intermediate" data-i18n="fingers_3_level">متوسط</span>
                         </div>
                         <ul class="finger-features">
-                            <li><i class="fas fa-check"></i> مرونة أكبر</li>
-                            <li><i class="fas fa-check"></i> تحكم أفضل</li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_3_feat1">مرونة أكبر</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_3_feat2">تحكم أفضل</span></li>
                         </ul>
                     </div>
                     
@@ -140,17 +142,17 @@
                             <i class="fas fa-hand-paper"></i>
                             <span class="finger-count">4</span>
                         </div>
-                        <h3>أربعة أصابع</h3>
-                        <p class="finger-description">الأكثر شيوعاً بين المحترفين</p>
+                        <h3 data-i18n="fingers_4_name">أربعة أصابع</h3>
+                        <p class="finger-description" data-i18n="fingers_4_desc">الأكثر شيوعاً بين المحترفين</p>
                         <div class="finger-level">
-                            <span class="level-badge advanced">متقدم</span>
+                            <span class="level-badge advanced" data-i18n="fingers_4_level">متقدم</span>
                         </div>
                         <ul class="finger-features">
-                            <li><i class="fas fa-check"></i> تحكم ممتاز</li>
-                            <li><i class="fas fa-check"></i> مناورات سريعة</li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_4_feat1">تحكم ممتاز</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_4_feat2">مناورات سريعة</span></li>
                         </ul>
                         <div class="recommended-badge">
-                            <i class="fas fa-star"></i> موصى به
+                            <i class="fas fa-star"></i> <span data-i18n="recommended_badge">موصى به</span>
                         </div>
                     </div>
                     
@@ -159,14 +161,14 @@
                             <i class="fas fa-hand-paper"></i>
                             <span class="finger-count">5</span>
                         </div>
-                        <h3>خمسة أصابع</h3>
-                        <p class="finger-description">أسلوب متقدم للمحترفين</p>
+                        <h3 data-i18n="fingers_5_name">خمسة أصابع</h3>
+                        <p class="finger-description" data-i18n="fingers_5_desc">أسلوب متقدم للمحترفين</p>
                         <div class="finger-level">
-                            <span class="level-badge expert">خبير</span>
+                            <span class="level-badge expert" data-i18n="fingers_5_level">خبير</span>
                         </div>
                         <ul class="finger-features">
-                            <li><i class="fas fa-check"></i> تحكم كامل</li>
-                            <li><i class="fas fa-check"></i> سرعة فائقة</li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_5_feat1">تحكم كامل</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_5_feat2">سرعة فائقة</span></li>
                         </ul>
                     </div>
                     
@@ -175,14 +177,14 @@
                             <i class="fas fa-hand-paper"></i>
                             <span class="finger-count">6</span>
                         </div>
-                        <h3>ستة أصابع</h3>
-                        <p class="finger-description">الأكثر تقدماً - للخبراء فقط</p>
+                        <h3 data-i18n="fingers_6_name">ستة أصابع</h3>
+                        <p class="finger-description" data-i18n="fingers_6_desc">الأكثر تقدماً - للخبراء فقط</p>
                         <div class="finger-level">
-                            <span class="level-badge master">محترف</span>
+                            <span class="level-badge master" data-i18n="fingers_6_level">محترف</span>
                         </div>
                         <ul class="finger-features">
-                            <li><i class="fas fa-check"></i> أقصى تحكم</li>
-                            <li><i class="fas fa-check"></i> إمكانيات لا محدودة</li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_6_feat1">أقصى تحكم</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="fingers_6_feat2">إمكانيات لا محدودة</span></li>
                         </ul>
                     </div>
                 </div>
@@ -196,11 +198,11 @@
                     <button class="back-btn" onclick="navigateTo('fingers')">
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                    <h1>
+                    <h1 data-i18n="detect_device_title">
                         <i class="fas fa-mobile-alt"></i>
                         اكتشاف الجهاز
                     </h1>
-                    <p class="page-description">سنقوم باكتشاف جهازك تلقائياً لتحديد الحساسية المثالية</p>
+                    <p class="page-description" data-i18n="detect_device_description">سنقوم باكتشاف جهازك تلقائياً لتحديد الحساسية المثالية</p>
                 </div>
                 
                 <div class="device-options">
@@ -208,37 +210,37 @@
                         <div class="device-icon">
                             <i class="fas fa-search"></i>
                         </div>
-                        <h3>اكتشاف تلقائي</h3>
-                        <p>اكتشاف دقيق لمواصفات جهازك</p>
+                        <h3 data-i18n="auto_detect_btn">اكتشاف تلقائي</h3>
+                        <p data-i18n="auto_detect_description">اكتشاف دقيق لمواصفات جهازك</p>
                         <div class="device-features">
-                            <span><i class="fas fa-check"></i> دقة عالية</span>
-                            <span><i class="fas fa-check"></i> تحليل شامل</span>
-                            <span><i class="fas fa-check"></i> موصى به</span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="auto_detect_features_1">دقة عالية</span></span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="auto_detect_features_2">تحليل شامل</span></span>
+                            <span><i class="fas fa-check"></i> <span data-i18n="auto_detect_features_3">موصى به</span></span>
                         </div>
                     </div>
                     
                     <div class="manual-options">
-                        <h4>أو اختر يدوياً:</h4>
+                        <h4 data-i18n="or_select_manually">أو اختر يدوياً:</h4>
                         <div class="manual-cards">
                             <div class="device-card" id="mobile-btn">
                                 <div class="device-icon">
                                     <i class="fas fa-mobile-alt"></i>
                                 </div>
-                                <h3>هاتف محمول</h3>
+                                <h3 data-i18n="mobile_btn">هاتف محمول</h3>
                             </div>
                             
                             <div class="device-card" id="tablet-btn">
                                 <div class="device-icon">
                                     <i class="fas fa-tablet-alt"></i>
                                 </div>
-                                <h3>تابلت</h3>
+                                <h3 data-i18n="tablet_btn">تابلت</h3>
                             </div>
                             
                             <div class="device-card" id="pc-btn">
                                 <div class="device-icon">
                                     <i class="fas fa-desktop"></i>
                                 </div>
-                                <h3>كمبيوتر</h3>
+                                <h3 data-i18n="pc_btn">كمبيوتر</h3>
                             </div>
                         </div>
                     </div>
@@ -255,7 +257,7 @@
                     <button class="back-btn" onclick="navigateTo('device')">
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                    <h1>
+                    <h1 data-i18n="results_title">
                         <i class="fas fa-chart-line"></i>
                         النتائج
                     </h1>
@@ -271,8 +273,8 @@
                             <div class="pulse-ring"></div>
                         </div>
                     </div>
-                    <h3>جاري تحليل جهازك...</h3>
-                    <p>يرجى الانتظار بينما نقوم بفحص مواصفات جهازك بدقة</p>
+                    <h3 data-i18n="analyzing_device">جاري تحليل جهازك...</h3>
+                    <p data-i18n="please_wait_analysis">يرجى الانتظار بينما نقوم بفحص مواصفات جهازك بدقة</p>
                     <div class="progress-bar">
                         <div class="progress-fill"></div>
                     </div>
@@ -281,13 +283,13 @@
                 <!-- Device Information -->
                 <div id="device-info" class="device-info">
                     <div class="info-header">
-                        <h2>
+                        <h2 data-i18n="device_info_title">
                             <i class="fas fa-info-circle"></i>
                             معلومات الجهاز
                         </h2>
                         <div class="accuracy-badge">
                             <i class="fas fa-shield-alt"></i>
-                            <span>دقة: <span id="detection-accuracy">0%</span></span>
+                            <span data-i18n="accuracy">دقة:</span> <span id="detection-accuracy">0%</span>
                         </div>
                     </div>
                     
@@ -297,8 +299,8 @@
                                 <i class="fas fa-mobile-alt"></i>
                             </div>
                             <div class="spec-content">
-                                <label>اسم الجهاز</label>
-                                <span id="device-name">جاري الاكتشاف...</span>
+                                <label data-i18n="device_name_label">اسم الجهاز</label>
+                                <span id="device-name" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -307,8 +309,8 @@
                                 <i class="fas fa-cog"></i>
                             </div>
                             <div class="spec-content">
-                                <label>نظام التشغيل</label>
-                                <span id="device-os">جاري الاكتشاف...</span>
+                                <label data-i18n="os_label">نظام التشغيل</label>
+                                <span id="device-os" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -317,8 +319,8 @@
                                 <i class="fas fa-memory"></i>
                             </div>
                             <div class="spec-content">
-                                <label>الذاكرة العشوائية</label>
-                                <span id="device-ram">جاري الاكتشاف...</span>
+                                <label data-i18n="ram_label">الذاكرة العشوائية</label>
+                                <span id="device-ram" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -327,8 +329,8 @@
                                 <i class="fas fa-microchip"></i>
                             </div>
                             <div class="spec-content">
-                                <label>المعالج</label>
-                                <span id="device-cpu">جاري الاكتشاف...</span>
+                                <label data-i18n="cpu_label">المعالج</label>
+                                <span id="device-cpu" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -337,8 +339,8 @@
                                 <i class="fas fa-tv"></i>
                             </div>
                             <div class="spec-content">
-                                <label>كرت الشاشة</label>
-                                <span id="device-gpu">جاري الاكتشاف...</span>
+                                <label data-i18n="gpu_label">كرت الشاشة</label>
+                                <span id="device-gpu" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -347,8 +349,8 @@
                                 <i class="fas fa-expand"></i>
                             </div>
                             <div class="spec-content">
-                                <label>دقة الشاشة</label>
-                                <span id="device-resolution">جاري الاكتشاف...</span>
+                                <label data-i18n="resolution_label">دقة الشاشة</label>
+                                <span id="device-resolution" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -357,8 +359,8 @@
                                 <i class="fas fa-hand-paper"></i>
                             </div>
                             <div class="spec-content">
-                                <label>نقاط اللمس</label>
-                                <span id="device-touch">جاري الاكتشاف...</span>
+                                <label data-i18n="touch_points_label">نقاط اللمس</label>
+                                <span id="device-touch" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                         
@@ -367,8 +369,8 @@
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
                             <div class="spec-content">
-                                <label>نقاط الأداء</label>
-                                <span id="device-performance">جاري الاكتشاف...</span>
+                                <label data-i18n="performance_score_label">نقاط الأداء</label>
+                                <span id="device-performance" data-i18n="detecting_placeholder">جاري الاكتشاف...</span>
                             </div>
                         </div>
                     </div>
@@ -376,18 +378,18 @@
 
                 <!-- Finger Selection Summary -->
                 <div id="finger-summary" class="finger-summary">
-                    <h3>
+                    <h3 data-i18n="finger_playstyle_title">
                         <i class="fas fa-hand-paper"></i>
                         أسلوب اللعب المختار
                     </h3>
                     <div class="selected-finger-info">
                         <div class="finger-display">
                             <span id="selected-finger-count">4</span>
-                            <span>أصابع</span>
+                            <span data-i18n="fingers_plural">أصابع</span>
                         </div>
                         <div class="finger-details">
-                            <h4 id="selected-finger-name">أربعة أصابع</h4>
-                            <p id="selected-finger-description">الأسلوب الأكثر شيوعاً بين المحترفين</p>
+                            <h4 id="selected-finger-name" data-i18n="fingers_4_name">أربعة أصابع</h4>
+                            <p id="selected-finger-description" data-i18n="fingers_4_desc">الأسلوب الأكثر شيوعاً بين المحترفين</p>
                         </div>
                     </div>
                 </div>
@@ -395,28 +397,28 @@
                 <!-- Sensitivity Results -->
                 <div id="sensitivity-info" class="sensitivity-info">
                     <div class="sensitivity-header">
-                        <h2>
+                        <h2 data-i18n="optimal_sensitivity_title">
                             <i class="fas fa-sliders-h"></i>
                             إعدادات الحساسية المثالية
                         </h2>
                         <div class="confidence-badge">
                             <i class="fas fa-check-circle"></i>
-                            <span>ثقة: <span id="sensitivity-confidence">0%</span></span>
+                            <span data-i18n="confidence">ثقة:</span> <span id="sensitivity-confidence">0%</span>
                         </div>
                     </div>
                     
                     <div id="sensitivity-values" class="sensitivity-grid"></div>
                     
                     <div class="sensitivity-actions">
-                        <button id="test-sensitivity" class="test-btn">
+                        <button id="test-sensitivity" class="test-btn" data-i18n="test_sensitivity_btn">
                             <i class="fas fa-play"></i>
                             تجربة الحساسية الآن
                         </button>
-                        <button id="copy-settings" class="copy-btn">
+                        <button id="copy-settings" class="copy-btn" data-i18n="copy_settings_btn">
                             <i class="fas fa-copy"></i>
                             نسخ الإعدادات
                         </button>
-                        <button id="share-settings" class="share-btn">
+                        <button id="share-settings" class="share-btn" data-i18n="share_settings_btn">
                             <i class="fas fa-share"></i>
                             مشاركة
                         </button>
@@ -425,7 +427,7 @@
 
                 <!-- Recommendations -->
                 <div id="recommendations" class="recommendations">
-                    <h3>
+                    <h3 data-i18n="recommendations_title">
                         <i class="fas fa-lightbulb"></i>
                         نصائح وتوصيات
                     </h3>
@@ -434,30 +436,30 @@
 
                 <!-- Compatibility Info -->
                 <div id="compatibility-info" class="compatibility-info">
-                    <h3>
+                    <h3 data-i18n="compatibility_info_title">
                         <i class="fas fa-shield-alt"></i>
                         معلومات التوافق
                     </h3>
                     <div class="compatibility-grid">
                         <div class="compatibility-item">
                             <i class="fas fa-gamepad"></i>
-                            <span>دعم فري فاير</span>
-                            <span id="freefire-support" class="status-good">مدعوم</span>
+                            <span data-i18n="freefire_support_label">دعم فري فاير</span>
+                            <span id="freefire-support" class="status-good" data-i18n="supported_status">مدعوم</span>
                         </div>
                         <div class="compatibility-item">
                             <i class="fas fa-cogs"></i>
-                            <span>الإعدادات الموصى بها</span>
-                            <span id="recommended-settings">متوسط</span>
+                            <span data-i18n="recommended_settings_label">الإعدادات الموصى بها</span>
+                            <span id="recommended-settings" data-i18n="medium_status">متوسط</span>
                         </div>
                         <div class="compatibility-item">
                             <i class="fas fa-tachometer-alt"></i>
-                            <span>معدل الإطارات المتوقع</span>
+                            <span data-i18n="expected_fps_label">معدل الإطارات المتوقع</span>
                             <span id="expected-fps">30-60</span>
                         </div>
                         <div class="compatibility-item">
                             <i class="fas fa-battery-half"></i>
-                            <span>عمر البطارية</span>
-                            <span id="battery-life">متوسط</span>
+                            <span data-i18n="battery_life_label">عمر البطارية</span>
+                            <span id="battery-life" data-i18n="medium_status">متوسط</span>
                         </div>
                     </div>
                 </div>
@@ -471,4 +473,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
